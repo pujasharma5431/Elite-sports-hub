@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useStore } from '../../context/StoreContext';
 import { Jersey, JerseySize, Gender, OrderStatus } from '../../types/jersey';
+import { AdminImageUploader } from '../../components/AdminImageUploader';
 import {
   Package,
   Sliders,
@@ -970,6 +971,18 @@ export default function AdminPage() {
                             }}
                           />
                         </div>
+
+                        {/* Replace Image with Auto WebP Compressor */}
+                        <div>
+                          <AdminImageUploader
+                            value={jersey.image}
+                            onChange={(newWebp) => {
+                              updateJerseyInventory(jersey.id, { image: newWebp });
+                              showNotification(`✅ Photo for "${jersey.title}" updated and compressed to WebP!`);
+                            }}
+                            label="REPLACE PRODUCT PHOTO (AUTO COMPRESSED TO WEBP)"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
@@ -1140,16 +1153,83 @@ export default function AdminPage() {
                 />
               </div>
 
+              {/* Product Image with Auto WebP Compression */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                  JERSEY IMAGE URL
-                </label>
-                <input
-                  type="url"
-                  className="form-input"
+                <AdminImageUploader
                   value={newImageUrl}
-                  onChange={(e) => setNewImageUrl(e.target.value)}
+                  onChange={setNewImageUrl}
+                  label="JERSEY PRODUCT IMAGE (DRAG & DROP OR BROWSE — AUTO REDUCED & WEBP COMPRESSED)"
                 />
+              </div>
+
+              {/* Sizing Matrix Selection */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
+                  AVAILABLE SIZES
+                </label>
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  {ALL_SIZES.map((sz) => {
+                    const active = newSizes.includes(sz);
+                    return (
+                      <button
+                        key={sz}
+                        type="button"
+                        onClick={() => {
+                          setNewSizes(
+                            active ? newSizes.filter((s) => s !== sz) : [...newSizes, sz]
+                          );
+                        }}
+                        style={{
+                          padding: '0.35rem 0.65rem',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                          background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                          color: active ? '#000000' : '#a1a1aa',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {sz}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Fit Selection */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
+                  FIT SPECIFICATION
+                </label>
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  {ALL_GENDERS.map((g) => {
+                    const active = newGenders.includes(g.id);
+                    return (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => {
+                          setNewGenders(
+                            active ? newGenders.filter((x) => x !== g.id) : [...newGenders, g.id]
+                          );
+                        }}
+                        style={{
+                          padding: '0.35rem 0.65rem',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                          background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                          color: active ? '#000000' : '#a1a1aa',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {g.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Flags */}

@@ -18,6 +18,7 @@ import {
   FileText,
   ShieldCheck,
 } from 'lucide-react';
+import { AdminImageUploader } from './AdminImageUploader';
 
 const ALL_SIZES: JerseySize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
 const ALL_GENDERS: { id: Gender; label: string }[] = [
@@ -694,6 +695,18 @@ export const InventoryManagerModal: React.FC = () => {
                             }}
                           />
                         </div>
+
+                        {/* Replace image with Auto WebP Compressor */}
+                        <div>
+                          <AdminImageUploader
+                            value={jersey.image}
+                            onChange={(newWebp) => {
+                              updateJerseyInventory(jersey.id, { image: newWebp });
+                              showNotification(`✅ Photo for "${jersey.title}" compressed to WebP!`);
+                            }}
+                            label="REPLACE PRODUCT PHOTO (AUTO COMPRESSED TO WEBP)"
+                          />
+                        </div>
                       </div>
                     )}
 
@@ -920,15 +933,81 @@ export const InventoryManagerModal: React.FC = () => {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: '#cbd5e1', marginBottom: '0.25rem' }}>
-                Jersey Image URL
-              </label>
-              <input
-                type="url"
-                className="form-input"
+              <AdminImageUploader
                 value={newImageUrl}
-                onChange={(e) => setNewImageUrl(e.target.value)}
+                onChange={setNewImageUrl}
+                label="Jersey Product Image (Auto Compressed & Converted to WebP)"
               />
+            </div>
+
+            {/* Sizing Matrix Selection */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#cbd5e1', marginBottom: '0.35rem' }}>
+                Available Sizes
+              </label>
+              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                {ALL_SIZES.map((sz) => {
+                  const active = newSizes.includes(sz);
+                  return (
+                    <button
+                      key={sz}
+                      type="button"
+                      onClick={() => {
+                        setNewSizes(
+                          active ? newSizes.filter((s) => s !== sz) : [...newSizes, sz]
+                        );
+                      }}
+                      style={{
+                        padding: '0.35rem 0.65rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                        background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                        color: active ? '#000000' : '#a1a1aa',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {sz}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Fit Selection */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#cbd5e1', marginBottom: '0.35rem' }}>
+                Fit Specifications
+              </label>
+              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                {ALL_GENDERS.map((g) => {
+                  const active = newGenders.includes(g.id);
+                  return (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => {
+                        setNewGenders(
+                          active ? newGenders.filter((x) => x !== g.id) : [...newGenders, g.id]
+                        );
+                      }}
+                      style={{
+                        padding: '0.35rem 0.65rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                        background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                        color: active ? '#000000' : '#a1a1aa',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {g.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Feature Flags */}
