@@ -2,41 +2,37 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowDown, Sparkles, Globe, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowDown, Sparkles } from 'lucide-react';
 
 interface LuxuryCampaignSlide {
   id: string;
-  dropTag: string;
+  tabLabel: string;
+  editionTag: string;
   kitName: string;
-  playerTag: string;
   image: string;
-  targetCategory?: 'nepal' | 'football' | 'limited';
 }
 
 const CAMPAIGN_SLIDES: LuxuryCampaignSlide[] = [
   {
-    id: 'campaign-nepal-rhinos',
-    dropTag: 'OFFICIAL MATCH ISSUE // 2026',
-    kitName: 'Nepal Rhinos T20 & Football Official Kit',
-    playerTag: 'Rohit Paudel #17 • Nepal Squad Edition',
-    image: '/campaigns/hero-nepal.jpg',
-    targetCategory: 'nepal',
+    id: 'campaign-jersey-focus',
+    tabLabel: '01. JERSEY FOCUS',
+    editionTag: 'PRO-GRADE ATHLETIC ISSUE',
+    kitName: 'Official Match Kit • White & Gold Edition',
+    image: '/campaigns/hero-standing-clean.jpg',
   },
   {
-    id: 'campaign-world-champions',
-    dropTag: 'WORLD FOOTBALL ARCHIVE',
-    kitName: 'Champions White & Gold Coronation Edition',
-    playerTag: 'Kylian Mbappé #9 • Pro Match AeroVent™',
-    image: '/campaigns/hero-champions.jpg',
-    targetCategory: 'football',
+    id: 'campaign-football-action',
+    tabLabel: '02. FOOTBALL PITCH',
+    editionTag: 'MATCHDAY IN MOTION',
+    kitName: 'Pro Stadium Issue • Match Tested',
+    image: '/campaigns/hero-football-action.jpg',
   },
   {
-    id: 'campaign-obsidian-collector',
-    dropTag: 'LIMITED TO 500 PIECES WORLDWIDE',
-    kitName: 'The Obsidian Series • 24K Gold Trim',
-    playerTag: 'Individually Numbered Vault Release',
-    image: '/campaigns/hero-obsidian.jpg',
-    targetCategory: 'limited',
+    id: 'campaign-cricket-action',
+    tabLabel: '03. CRICKET GROUND',
+    editionTag: 'STADIUM TOURNAMENT PLAY',
+    kitName: 'National Cricket Arena Issue',
+    image: '/campaigns/hero-cricket-action.jpg',
   },
 ];
 
@@ -89,13 +85,13 @@ export const ModernNikeHero: React.FC = () => {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: 'clamp(660px, 88vh, 920px)',
+        minHeight: 'clamp(640px, 86vh, 900px)',
         overflow: 'hidden',
         background: '#040507',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '3.5rem 1rem 4rem 1rem',
+        padding: '3rem 1.25rem 4.5rem 1.25rem',
       }}
     >
       {/* Background Campaign Visuals with Ken Burns Scale Animation */}
@@ -108,7 +104,7 @@ export const ModernNikeHero: React.FC = () => {
               position: 'absolute',
               inset: 0,
               opacity: isActive ? 1 : 0,
-              transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              transition: 'opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
               pointerEvents: isActive ? 'auto' : 'none',
               overflow: 'hidden',
             }}
@@ -118,7 +114,7 @@ export const ModernNikeHero: React.FC = () => {
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-                transform: isActive ? 'scale(1.06)' : 'scale(1.0)',
+                transform: isActive ? 'scale(1.08)' : 'scale(1.0)',
                 transition: 'transform 8s cubic-bezier(0.25, 1, 0.5, 1)',
               }}
             >
@@ -129,32 +125,32 @@ export const ModernNikeHero: React.FC = () => {
                 priority={idx === 0}
                 style={{
                   objectFit: 'cover',
-                  objectPosition: 'center 25%',
+                  objectPosition: idx === 0 ? 'center 30%' : idx === 1 ? 'center 35%' : 'center 40%',
                 }}
               />
             </div>
 
-            {/* High-Fashion Cinematic Vignettes (Ralph Lauren moody shading) */}
+            {/* Bright, Clean Atmospheric Overlays (Clean light with subtle contrast) */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'linear-gradient(180deg, rgba(4, 5, 7, 0.6) 0%, rgba(4, 5, 7, 0.25) 30%, rgba(4, 5, 7, 0.72) 70%, rgba(4, 5, 7, 0.98) 100%)',
+                  'linear-gradient(180deg, rgba(8, 9, 13, 0.52) 0%, rgba(8, 9, 13, 0.18) 32%, rgba(8, 9, 13, 0.55) 72%, rgba(8, 9, 13, 0.94) 100%)',
               }}
             />
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'radial-gradient(ellipse at center, transparent 35%, rgba(4, 5, 7, 0.65) 100%)',
+                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(8, 9, 13, 0.55) 100%)',
               }}
             />
           </div>
         );
       })}
 
-      {/* Center Cinematic Editorial Overlay */}
+      {/* Center Clean, Ultra-Premium Editorial Overlay */}
       <div
         className="container"
         style={{
@@ -164,61 +160,45 @@ export const ModernNikeHero: React.FC = () => {
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
-          maxWidth: '960px',
+          maxWidth: '920px',
           padding: '0 1rem',
           opacity: isTransitioning ? 0.35 : 1,
           transform: isTransitioning ? 'translateY(6px)' : 'translateY(0)',
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Exact Tagline Eyebrow: Premium Jersey Store — Nepal */}
+        {/* Minimalist Eyebrow Kicker */}
         <div
           id="hero-eyebrow-tag"
           style={{
-            fontSize: '0.78rem',
-            letterSpacing: '0.2em',
+            fontSize: '0.76rem',
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: '#f8fafc',
-            fontWeight: 600,
-            marginBottom: '0.9rem',
+            fontWeight: 700,
+            marginBottom: '1rem',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.65rem',
-            background: 'rgba(0, 0, 0, 0.55)',
+            gap: '0.6rem',
+            background: 'rgba(0, 0, 0, 0.45)',
             backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             padding: '0.42rem 1.15rem',
             borderRadius: '9999px',
-            border: '1px solid rgba(255, 255, 255, 0.18)',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
           }}
         >
           <span
             style={{
-              width: '7px',
-              height: '7px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
               background: '#ef4444',
-              boxShadow: '0 0 10px #ef4444',
+              boxShadow: '0 0 8px #ef4444',
             }}
           />
           <span>Premium Jersey Store — Nepal</span>
-        </div>
-
-        {/* Brand Name: Elite Sports Hub */}
-        <div
-          id="hero-brand-subtitle"
-          style={{
-            fontFamily: 'var(--font-primary), sans-serif',
-            fontSize: 'clamp(0.85rem, 1.4vw, 1.15rem)',
-            letterSpacing: '0.35em',
-            color: '#cbd5e1',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            marginBottom: '0.65rem',
-            textShadow: '0 2px 12px rgba(0, 0, 0, 0.9)',
-          }}
-        >
-          Elite Sports Hub
         </div>
 
         {/* Majestic 2-Line Headline: Wear the \n Victory. */}
@@ -226,8 +206,8 @@ export const ModernNikeHero: React.FC = () => {
           id="hero-main-heading"
           style={{
             fontFamily: 'var(--font-luxury), Georgia, serif',
-            fontSize: 'clamp(3.2rem, 7.8vw, 6.4rem)',
-            lineHeight: 0.96,
+            fontSize: 'clamp(3.4rem, 8.2vw, 6.8rem)',
+            lineHeight: 0.94,
             fontWeight: 700,
             letterSpacing: '0.08em',
             color: '#ffffff',
@@ -251,7 +231,7 @@ export const ModernNikeHero: React.FC = () => {
           <span
             style={{
               display: 'block',
-              background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 45%, #cbd5e1 80%, #94a3b8 100%)',
+              background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 45%, #cbd5e1 80%, #94a3b8 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               letterSpacing: '0.14em',
@@ -261,15 +241,15 @@ export const ModernNikeHero: React.FC = () => {
           </span>
         </h1>
 
-        {/* Exact User Tagline */}
+        {/* Clean, Refined Professional Tagline */}
         <p
           id="hero-tagline-text"
           style={{
-            fontSize: 'clamp(0.95rem, 1.3vw, 1.12rem)',
+            fontSize: 'clamp(0.95rem, 1.35vw, 1.14rem)',
             color: '#e2e8f0',
             lineHeight: 1.65,
-            maxWidth: '720px',
-            marginBottom: '1.5rem',
+            maxWidth: '680px',
+            marginBottom: '2.1rem',
             textShadow: '0 2px 14px rgba(0, 0, 0, 0.95)',
             fontWeight: 400,
           }}
@@ -277,68 +257,7 @@ export const ModernNikeHero: React.FC = () => {
           Top-grade football & cricket jerseys delivered across Nepal. Authentic designs, fan-perfect fit, prices that won’t break your budget.
         </p>
 
-        {/* Delivery Destinations Ribbon: Nepal, Dubai, India & Worldwide */}
-        <div
-          id="hero-delivery-destinations"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '0.65rem 1rem',
-            padding: '0.55rem 1.35rem',
-            background: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.16)',
-            borderRadius: '9999px',
-            fontSize: '0.78rem',
-            color: '#cbd5e1',
-            fontWeight: 500,
-            marginBottom: '2.1rem',
-            boxShadow: '0 6px 25px rgba(0, 0, 0, 0.7)',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              color: '#fbbf24',
-              fontWeight: 700,
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              fontSize: '0.72rem',
-            }}
-          >
-            <Globe size={13} color="#fbbf24" />
-            <span>Delivery Available:</span>
-          </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#ffffff', fontWeight: 600 }}>
-            <span>🇳🇵</span> <span>All Over Nepal (77 Districts)</span>
-          </span>
-          <span style={{ color: '#475569' }}>•</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#ffffff', fontWeight: 600 }}>
-            <span>🇦🇪</span> <span>Dubai (UAE)</span>
-          </span>
-          <span style={{ color: '#475569' }}>•</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#ffffff', fontWeight: 600 }}>
-            <span>🇮🇳</span> <span>India</span>
-          </span>
-          <span style={{ color: '#475569' }}>•</span>
-          <span
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              color: '#38bdf8',
-              fontWeight: 700,
-            }}
-          >
-            <span>🌐</span> <span>Worldwide / Overall Shipping</span>
-          </span>
-        </div>
-
-        {/* Understated Luxury Actions (NO prices or size clutter) */}
+        {/* Understated Luxury Actions (Clean, Premium, Zero Retail Clutter) */}
         <div
           style={{
             display: 'flex',
@@ -346,7 +265,6 @@ export const ModernNikeHero: React.FC = () => {
             gap: '1.25rem',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            marginBottom: '1.75rem',
           }}
         >
           <button
@@ -354,7 +272,7 @@ export const ModernNikeHero: React.FC = () => {
             onClick={scrollToCatalog}
             style={{
               height: '52px',
-              padding: '0 2.4rem',
+              padding: '0 2.5rem',
               background: '#ffffff',
               color: '#06070a',
               border: '1px solid #ffffff',
@@ -389,9 +307,10 @@ export const ModernNikeHero: React.FC = () => {
             onClick={scrollToCustomizer}
             style={{
               height: '52px',
-              padding: '0 2.1rem',
+              padding: '0 2.2rem',
               background: 'rgba(0, 0, 0, 0.45)',
               backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
               color: '#ffffff',
               border: '1px solid rgba(255, 255, 255, 0.35)',
               borderRadius: '4px',
@@ -407,7 +326,7 @@ export const ModernNikeHero: React.FC = () => {
               transition: 'all 0.25s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)';
               e.currentTarget.style.borderColor = '#ffffff';
             }}
             onMouseLeave={(e) => {
@@ -418,27 +337,6 @@ export const ModernNikeHero: React.FC = () => {
             <Sparkles size={14} />
             <span>Customize Jersey</span>
           </button>
-        </div>
-
-        {/* Live Jersey Showcase Indicator */}
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: '0.74rem',
-            color: '#94a3b8',
-            letterSpacing: '0.06em',
-            background: 'rgba(0, 0, 0, 0.4)',
-            padding: '0.35rem 0.9rem',
-            borderRadius: '9999px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <span style={{ color: '#ef4444', fontWeight: 700 }}>ON CAMPAIGN:</span>
-          <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{currentSlide.kitName}</span>
-          <span style={{ color: '#475569' }}>—</span>
-          <span>{currentSlide.playerTag}</span>
         </div>
       </div>
 
@@ -454,8 +352,9 @@ export const ModernNikeHero: React.FC = () => {
           width: '46px',
           height: '46px',
           borderRadius: '50%',
-          background: 'rgba(0, 0, 0, 0.45)',
+          background: 'rgba(0, 0, 0, 0.4)',
           backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           color: '#ffffff',
           display: 'flex',
@@ -481,8 +380,9 @@ export const ModernNikeHero: React.FC = () => {
           width: '46px',
           height: '46px',
           borderRadius: '50%',
-          background: 'rgba(0, 0, 0, 0.45)',
+          background: 'rgba(0, 0, 0, 0.4)',
           backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           color: '#ffffff',
           display: 'flex',
@@ -501,14 +401,14 @@ export const ModernNikeHero: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          bottom: '22px',
+          bottom: '24px',
           left: 0,
           right: 0,
           zIndex: 15,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '1.5rem',
+          gap: '1.75rem',
         }}
       >
         {CAMPAIGN_SLIDES.map((slide, idx) => {
@@ -534,11 +434,11 @@ export const ModernNikeHero: React.FC = () => {
                   letterSpacing: '0.15em',
                   fontWeight: 700,
                   textTransform: 'uppercase',
-                  color: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
+                  color: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
                   transition: 'color 0.3s ease',
                 }}
               >
-                0{idx + 1}. {idx === 0 ? 'NEPAL RHINOS' : idx === 1 ? 'CHAMPIONS ISSUE' : 'OBSIDIAN SERIES'}
+                {slide.tabLabel}
               </div>
               <div
                 style={{
@@ -555,4 +455,5 @@ export const ModernNikeHero: React.FC = () => {
     </section>
   );
 };
+
 

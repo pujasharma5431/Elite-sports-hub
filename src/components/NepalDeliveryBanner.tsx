@@ -1,61 +1,65 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Zap, Globe, Truck } from 'lucide-react';
 
 export const NepalDeliveryBanner: React.FC = () => {
-  return (
-    <div
-      id="nepal-delivery-banner"
-      style={{
-        background: '#040507',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        fontSize: '0.74rem',
-        padding: '0.45rem 1rem',
-        color: '#94a3b8',
-        fontWeight: 500,
-        position: 'relative',
-        zIndex: 40,
-      }}
-    >
-      <div
-        className="container"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '0.75rem',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <span style={{ color: '#ffffff', fontWeight: 800, letterSpacing: '0.04em' }}>
-            ELITE SPORTS HUB
-          </span>
-          <span style={{ color: '#334155' }}>/</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: '#e2e8f0', fontWeight: 600 }}>
-            <span>Premium Jersey Store — Nepal</span>
-          </span>
-        </div>
+  const marqueeItems = [
+    { text: 'DELIVERY ALL OVER NEPAL (ALL 77 DISTRICTS)' },
+    { text: '🇦🇪 DUBAI (UAE) EXPRESS AIR SHIPPING' },
+    { text: '🇮🇳 INDIA COURIER DISPATCH' },
+    { text: '🌐 WORLDWIDE / OVERALL INTERNATIONAL DELIVERY' },
+    { text: '⚡ SAME-DAY DISPATCH IN KATHMANDU VALLEY' },
+    { text: '★ AUTHENTIC MATCH-GRADE CRICKET & FOOTBALL KITS' },
+    { text: 'CASH ON DELIVERY • eSEWA • KHALTI • CARDS' },
+    { text: 'ELITE SPORTS HUB — PREMIUM JERSEY STORE NEPAL' },
+  ];
 
-        {/* Global Delivery Destinations */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap', fontSize: '0.73rem' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#fbbf24', fontWeight: 700 }}>
-            <Truck size={12} color="#fbbf24" />
-            <span>Delivery:</span>
-          </span>
-          <span style={{ color: '#f1f5f9' }}>🇳🇵 All Over Nepal (77 Districts)</span>
-          <span style={{ color: '#334155' }}>•</span>
-          <span style={{ color: '#f1f5f9' }}>🇦🇪 Dubai (UAE)</span>
-          <span style={{ color: '#334155' }}>•</span>
-          <span style={{ color: '#f1f5f9' }}>🇮🇳 India</span>
-          <span style={{ color: '#334155' }}>•</span>
-          <span style={{ color: '#38bdf8', fontWeight: 700 }}>🌐 Worldwide Shipping</span>
-          <span style={{ color: '#334155' }}>|</span>
-          <span style={{ color: '#cbd5e1' }}>COD • eSewa • Khalti • Cards</span>
-        </div>
-      </div>
+  const renderTickerTrack = (keyPrefix: string) => (
+    <div className="marquee-content" style={{ display: 'inline-flex', alignItems: 'center' }}>
+      {marqueeItems.map((item, idx) => (
+        <span
+          key={`${keyPrefix}-${idx}`}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.65rem',
+            padding: '0 1.25rem',
+            fontSize: '0.73rem',
+            fontWeight: 800,
+            letterSpacing: '0.08em',
+            color: '#ffffff',
+            textTransform: 'uppercase',
+          }}
+        >
+          <span style={{ color: '#fef08a' }}>✦</span>
+          <span>{item.text}</span>
+        </span>
+      ))}
     </div>
   );
+
+  return (
+    <aside
+      id="red-animated-delivery-marquee"
+      aria-label="Delivery Announcements"
+      style={{
+        background: 'linear-gradient(90deg, #b91c1c 0%, #dc2626 50%, #b91c1c 100%)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
+        height: '35px',
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
+        position: 'relative',
+        zIndex: 55,
+        boxShadow: '0 2px 12px rgba(220, 38, 38, 0.35)',
+      }}
+    >
+      <div className="marquee-container" style={{ width: '100%' }}>
+        {renderTickerTrack('track-1')}
+        {renderTickerTrack('track-2')}
+      </div>
+    </aside>
+  );
 };
+
 
