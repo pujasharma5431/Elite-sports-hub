@@ -1,7 +1,6 @@
 'use client';
-
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
-import { Jersey, FilterState, CartItem, SanityConfig, JerseySize, Gender } from '../types/jersey';
+import { Jersey, FilterState, CartItem, SanityConfig, JerseySize, Gender, Order, OrderStatus } from '../types/jersey';
 import { INITIAL_JERSEYS } from '../data/initialJerseys';
 import { fetchJerseys, isSanityConfigured } from '../lib/sanity';
 
@@ -29,6 +28,16 @@ interface StoreContextType {
   // Checkout
   isCheckoutOpen: boolean;
   setIsCheckoutOpen: (open: boolean) => void;
+  // Orders & Tracking
+  orders: Order[];
+  placeOrder: (orderData: Omit<Order, 'id' | 'createdAt' | 'status'>) => Order;
+  updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  isTrackerOpen: boolean;
+  setIsTrackerOpen: (open: boolean) => void;
+  trackingOrderCode: string;
+  setTrackingOrderCode: (code: string) => void;
+  adminWhatsAppNumber: string;
+  setAdminWhatsAppNumber: (phone: string) => void;
   // Admin & Inventory Management
   isAdminOpen: boolean;
   setIsAdminOpen: (open: boolean) => void;
@@ -68,6 +77,60 @@ const LOCAL_STORAGE_KEY_JERSEYS = 'elitesportshub_jerseys_v1';
 const LOCAL_STORAGE_KEY_CART = 'elitesportshub_cart_v1';
 const LOCAL_STORAGE_KEY_WISHLIST = 'elitesportshub_wishlist_v1';
 const LOCAL_STORAGE_KEY_SANITY = 'elitesportshub_sanity_v1';
+const LOCAL_STORAGE_KEY_ORDERS = 'elitesportshub_orders_v1';
+const LOCAL_STORAGE_KEY_WHATSAPP = 'elitesportshub_whatsapp_v1';
+
+const INITIAL_SAMPLE_ORDERS: Order[] = [
+  {
+    id: 'ESH-89241',
+    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+    customerName: 'Aayush Shrestha',
+    phone: '9841234567',
+    country: 'Nepal',
+    region: 'Kathmandu (New Baneshwor)',
+    address: 'Near Eyeplex Mall, Ward 10',
+    totalAmount: 8999,
+    paymentMethod: 'esewa',
+    status: 'Packed',
+    items: [
+      {
+        id: 'sample-1',
+        jerseyId: 'ltd-messi-wc-final',
+        jersey: INITIAL_JERSEYS[5] || INITIAL_JERSEYS[0],
+        selectedSize: 'M',
+        selectedGender: 'men',
+        selectedColor: { name: 'Albiceleste Sky Blue', hex: '#38BDF8' },
+        quantity: 1,
+        price: 8999,
+      },
+    ],
+  },
+  {
+    id: 'ESH-92015',
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
+    customerName: 'Bikash Gurung',
+    phone: '9801987654',
+    country: 'Nepal',
+    region: 'Kaski (Pokhara)',
+    address: 'Lakeside, Ward 6',
+    totalAmount: 3550,
+    paymentMethod: 'cod',
+    status: 'Dispatched',
+    items: [
+      {
+        id: 'sample-2',
+        jerseyId: 'nep-cric-rohit-17',
+        jersey: INITIAL_JERSEYS[0],
+        selectedSize: 'L',
+        selectedGender: 'men',
+        selectedColor: { name: 'Rhino Red', hex: '#dc2626' },
+        customPrint: { name: 'BIKASH', number: '7' },
+        quantity: 1,
+        price: 3550,
+      },
+    ],
+  },
+];
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [jerseys, setJerseys] = useState<Jersey[]>(INITIAL_JERSEYS);
@@ -80,6 +143,12 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [isSanityModalOpen, setIsSanityModalOpen] = useState(false);
   const [quickViewJersey, setQuickViewJersey] = useState<Jersey | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Orders & Tracking state
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+  const [trackingOrderCode, setTrackingOrderCode] = useState('');
+  const [adminWhatsAppNumber, setAdminWhatsAppNumber] = useState('9779801234567');
 
   const [sanityConfig, setSanityConfig] = useState<SanityConfig>({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
@@ -133,6 +202,18 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       if (storedWishlist) {
         setWishlist(JSON.parse(storedWishlist));
       }
+
+      const storedOrders = localStorage.getItem(LOCAL_STORAGE_KEY_ORDERS);
+      if (storedOrders) {
+        setOrders(JSON.parse(storedOrders));
+      } else {
+        setOrders(INITIAL_SAMPLE_ORDERS);
+      }
+
+      const storedWhatsApp = localStorage.getItem(LOCAL_STORAGE_KEY_WHATSAPP);
+      if (storedWhatsApp) {
+        setAdminWhatsAppNumber(storedWhatsApp);
+      }
     } catch (e) {
       console.error('LocalStorage hydration error:', e);
     }
@@ -162,6 +243,22 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       console.error(e);
     }
   }, [wishlist]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY_ORDERS, JSON.stringify(orders));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [orders]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY_WHATSAPP, adminWhatsAppNumber);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [adminWhatsAppNumber]);
 
   // Load from Sanity if configured
   useEffect(() => {
@@ -377,6 +474,24 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       return 0;
     });
   }, [jerseys, filters]);
+  // Orders & Tracking Actions
+  const placeOrder = (orderData: Omit<Order, 'id' | 'createdAt' | 'status'>): Order => {
+    const code = `ESH-${Math.floor(10000 + Math.random() * 90000)}`;
+    const newOrder: Order = {
+      ...orderData,
+      id: code,
+      createdAt: new Date().toISOString(),
+      status: 'Order Received',
+    };
+    setOrders((prev) => [newOrder, ...prev]);
+    return newOrder;
+  };
+
+  const updateOrderStatus = (orderId: string, status: OrderStatus) => {
+    setOrders((prev) =>
+      prev.map((o) => (o.id === orderId ? { ...o, status } : o))
+    );
+  };
 
   return (
     <StoreContext.Provider
@@ -401,6 +516,15 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         toggleWishlist,
         isCheckoutOpen,
         setIsCheckoutOpen,
+        orders,
+        placeOrder,
+        updateOrderStatus,
+        isTrackerOpen,
+        setIsTrackerOpen,
+        trackingOrderCode,
+        setTrackingOrderCode,
+        adminWhatsAppNumber,
+        setAdminWhatsAppNumber,
         isAdminOpen,
         setIsAdminOpen,
         updateJerseyInventory,

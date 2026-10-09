@@ -12,6 +12,8 @@ import { CartDrawer } from '../components/CartDrawer';
 import { CheckoutModal } from '../components/CheckoutModal';
 import { InventoryManagerModal } from '../components/InventoryManagerModal';
 import { SanityConnectModal } from '../components/SanityConnectModal';
+import { Footer } from '../components/Footer';
+import { OrderTrackerModal } from '../components/OrderTrackerModal';
 import {
   Sparkles,
   Truck,
@@ -186,54 +188,8 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* 7. Modern Brand Footer */}
-      <footer style={{ padding: '3.5rem 0 2.5rem 0', background: '#06070a', color: '#94a3b8', fontSize: '0.82rem' }}>
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', textAlign: 'center' }}>
-          <div
-            style={{
-              fontFamily: 'var(--font-primary)',
-              fontSize: '1.35rem',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              color: '#ffffff',
-            }}
-          >
-            ELITE SPORTS HUB
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-luxury), Georgia, serif',
-              fontSize: '1.05rem',
-              letterSpacing: '0.12em',
-              color: '#e2e8f0',
-              textTransform: 'uppercase',
-            }}
-          >
-            Wear the Victory.
-          </div>
-          <p style={{ maxWidth: '560px', lineHeight: 1.6, fontSize: '0.85rem', color: '#94a3b8' }}>
-            Top-grade football & cricket jerseys delivered across Nepal, Dubai, India, and overall worldwide. Authentic designs, fan-perfect fit, prices that won’t break your budget.
-          </p>
-
-          <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center', fontSize: '0.8rem', color: '#cbd5e1' }}>
-            <span>🇳🇵 Nepal (77 Districts)</span>
-            <span>•</span>
-            <span>🇦🇪 Dubai (UAE)</span>
-            <span>•</span>
-            <span>🇮🇳 India</span>
-            <span>•</span>
-            <span>🌐 Worldwide Shipping</span>
-            <span>•</span>
-            <span>Cash on Delivery</span>
-            <span>•</span>
-            <span>eSewa / Khalti</span>
-          </div>
-
-          <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>
-            © 2026 Elite Sports Hub Nepal. All rights reserved. • Connected to Sanity CMS (Project: <code style={{ color: '#ffffff' }}>cfa5sriy</code>)
-          </div>
-        </div>
-      </footer>
+      {/* 7. Modern Brand Footer with Socials and Admin Link */}
+      <Footer />
 
       {/* 8. Global Interactive Modals */}
       <JerseyQuickView />
@@ -241,6 +197,7 @@ export default function ShopPage() {
       <CheckoutModal />
       <InventoryManagerModal />
       <SanityConnectModal />
+      <OrderTrackerModal />
     </main>
   );
 }

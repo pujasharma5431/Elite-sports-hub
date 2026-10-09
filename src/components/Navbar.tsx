@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, Heart, Sliders, Database, Search } from 'lucide-react';
+import { ShoppingBag, Heart, Sliders, Database, Search, Truck } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const {
@@ -11,7 +12,7 @@ export const Navbar: React.FC = () => {
     cartCount,
     setIsCartOpen,
     wishlist,
-    setIsAdminOpen,
+    setIsTrackerOpen,
     setIsSanityModalOpen,
     sanityConfig,
   } = useStore();
@@ -207,10 +208,34 @@ export const Navbar: React.FC = () => {
             />
           </button>
 
-          {/* Store Inventory Management */}
+          {/* Track Order Button */}
           <button
-            id="open-inventory-manager-btn"
-            onClick={() => setIsAdminOpen(true)}
+            id="navbar-track-order-btn"
+            onClick={() => setIsTrackerOpen(true)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#ffffff',
+              borderRadius: '8px',
+              padding: '0.45rem 0.75rem',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontFamily: 'var(--font-mono)',
+            }}
+            title="Track your shipment"
+          >
+            <Truck size={13} color="#10b981" />
+            <span>Track Order</span>
+          </button>
+
+          {/* Admin Portal Route Link */}
+          <Link
+            id="navbar-admin-link"
+            href="/admin"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -222,13 +247,14 @@ export const Navbar: React.FC = () => {
               padding: '0.45rem 0.75rem',
               fontSize: '0.75rem',
               fontWeight: 600,
-              cursor: 'pointer',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-mono)',
             }}
-            title="Store Stock & Product Management"
+            title="Dedicated Admin Command Center"
           >
             <Sliders size={13} color="#94a3b8" />
-            <span>Inventory</span>
-          </button>
+            <span>/admin</span>
+          </Link>
 
           {/* Wishlist */}
           <div

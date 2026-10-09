@@ -82,3 +82,21 @@ export interface SanityConfig {
   token?: string;
   isConnected: boolean;
 }
+
+export type OrderStatus = 'Order Received' | 'Packed' | 'Dispatched' | 'Delivered';
+
+export interface Order {
+  id: string;
+  createdAt: string;
+  customerName: string;
+  phone: string;
+  country: string;
+  region: string;
+  address: string;
+  items: CartItem[];
+  totalAmount: number;
+  paymentMethod: 'cod' | 'esewa' | 'khalti' | 'bank_transfer';
+  status: OrderStatus;
+  notes?: string;
+}
+
