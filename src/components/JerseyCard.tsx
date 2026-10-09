@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Jersey, JerseySize } from '../types/jersey';
 import { useStore } from '../context/StoreContext';
-import { Heart, Eye, ArrowUpRight } from 'lucide-react';
+import { Heart, ArrowUpRight, Sparkles } from 'lucide-react';
 
 interface JerseyCardProps {
   jersey: Jersey;
@@ -38,15 +38,20 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        background: '#070707',
+        background: '#0d0f15',
         border: isHovered
-          ? '1px solid rgba(255, 255, 255, 0.4)'
-          : '1px solid rgba(255, 255, 255, 0.1)',
+          ? '1px solid rgba(255, 255, 255, 0.28)'
+          : '1px solid rgba(255, 255, 255, 0.08)',
+        borderRadius: '12px',
         overflow: 'hidden',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'all 0.3s ease',
+        boxShadow: isHovered
+          ? '0 16px 40px rgba(0, 0, 0, 0.7)'
+          : '0 4px 20px rgba(0, 0, 0, 0.4)',
+        transform: isHovered ? 'translateY(-3px)' : 'translateY(0)',
+        transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {/* Photo Frame */}
@@ -54,8 +59,8 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
         style={{
           position: 'relative',
           width: '100%',
-          paddingTop: '120%', // Clean vertical proportion
-          background: '#090909',
+          paddingTop: '115%',
+          background: '#0a0b10',
           overflow: 'hidden',
           cursor: 'pointer',
         }}
@@ -73,88 +78,92 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
           }}
         />
 
-        {/* Minimal Monochrome Overlay */}
+        {/* Subtle Vignette */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.25) 100%)',
+            background: 'linear-gradient(to top, rgba(13, 15, 21, 0.95) 0%, rgba(13, 15, 21, 0.05) 50%, rgba(13, 15, 21, 0.2) 100%)',
           }}
         />
 
-        {/* Minimalist Top Tags */}
+        {/* Top Badges */}
         <div
           style={{
             position: 'absolute',
-            top: '12px',
-            left: '12px',
+            top: '10px',
+            left: '10px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '4px',
+            gap: '5px',
             zIndex: 10,
           }}
         >
           {jersey.isLimitedEdition && (
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                background: '#ffffff',
-                color: '#000000',
-                padding: '0.2rem 0.5rem',
-                fontWeight: 800,
+                fontSize: '0.68rem',
+                background: 'rgba(245, 158, 11, 0.18)',
+                color: '#fbbf24',
+                border: '1px solid rgba(245, 158, 11, 0.4)',
+                padding: '0.2rem 0.55rem',
+                borderRadius: '6px',
+                fontWeight: 700,
+                letterSpacing: '0.02em',
+                backdropFilter: 'blur(6px)',
               }}
             >
-              LIMITED 1/500
+              ★ Limited 1/500
             </span>
           )}
 
           {jersey.nepalSpecial && (
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                background: 'rgba(0, 0, 0, 0.8)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                color: '#ffffff',
-                padding: '0.2rem 0.5rem',
+                fontSize: '0.68rem',
+                background: 'rgba(239, 68, 68, 0.18)',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                color: '#f87171',
+                padding: '0.2rem 0.55rem',
+                borderRadius: '6px',
                 fontWeight: 700,
+                letterSpacing: '0.02em',
+                backdropFilter: 'blur(6px)',
               }}
             >
-              NEPAL SQUAD
+              🇳🇵 Nepal Squad
             </span>
           )}
 
           {jersey.isOnSale && (
             <span
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
+                fontSize: '0.68rem',
                 background: 'rgba(255, 255, 255, 0.15)',
                 color: '#ffffff',
-                padding: '0.2rem 0.5rem',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                padding: '0.2rem 0.55rem',
+                borderRadius: '6px',
                 fontWeight: 700,
+                backdropFilter: 'blur(6px)',
               }}
             >
-              SALE ISSUE
+              On Sale
             </span>
           )}
         </div>
 
-        {/* Stencil Number Top Right */}
+        {/* Player Squad Number Stencil */}
         {jersey.playerNumber && (
           <div
             style={{
               position: 'absolute',
-              top: '12px',
-              right: '48px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '1.2rem',
+              top: '10px',
+              right: '46px',
+              fontSize: '1.1rem',
               fontWeight: 800,
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'rgba(255, 255, 255, 0.45)',
+              fontFamily: 'var(--font-mono)',
               zIndex: 10,
             }}
           >
@@ -162,7 +171,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
           </div>
         )}
 
-        {/* Minimal Wishlist Button */}
+        {/* Wishlist Button */}
         <button
           id={`wishlist-btn-${jersey.id}`}
           onClick={(e) => {
@@ -171,34 +180,37 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
           }}
           style={{
             position: 'absolute',
-            top: '12px',
-            right: '12px',
+            top: '10px',
+            right: '10px',
             width: '32px',
             height: '32px',
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '50%',
+            background: 'rgba(13, 15, 21, 0.85)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#ffffff',
             cursor: 'pointer',
             zIndex: 10,
+            transition: 'all 0.2s ease',
           }}
           title="Wishlist"
         >
-          <Heart size={14} fill={isWishlisted ? '#ffffff' : 'none'} />
+          <Heart size={14} fill={isWishlisted ? '#ef4444' : 'none'} color={isWishlisted ? '#ef4444' : '#ffffff'} />
         </button>
 
-        {/* Monochrome Quick Size Bar on Hover */}
+        {/* Quick Size Strip on Hover */}
         <div
           style={{
             position: 'absolute',
-            bottom: '10px',
-            left: '10px',
-            right: '10px',
-            background: '#000000',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
-            padding: '0.4rem',
+            bottom: '8px',
+            left: '8px',
+            right: '8px',
+            background: 'rgba(13, 15, 21, 0.94)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '8px',
+            padding: '0.4rem 0.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -209,8 +221,8 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 800, color: '#71717a', paddingLeft: '0.3rem' }}>
-            QUICK ADD:
+          <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8' }}>
+            Quick Add:
           </span>
 
           <div style={{ display: 'flex', gap: '0.25rem' }}>
@@ -222,12 +234,12 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
                   onClick={(e) => handleDirectAddSize(e, sz)}
                   style={{
                     padding: '0.2rem 0.45rem',
-                    fontSize: '0.7rem',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: 800,
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    borderRadius: '4px',
                     border: isAdded ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
-                    background: isAdded ? '#ffffff' : 'transparent',
-                    color: isAdded ? '#000000' : '#ffffff',
+                    background: isAdded ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                    color: isAdded ? '#08090d' : '#f1f5f9',
                     cursor: 'pointer',
                     transition: 'var(--transition)',
                   }}
@@ -243,7 +255,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
       {/* Card Content */}
       <div
         style={{
-          padding: '1.25rem',
+          padding: '1.15rem',
           display: 'flex',
           flexDirection: 'column',
           flex: 1,
@@ -252,30 +264,29 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
         }}
       >
         <div>
-          {/* Division & Team */}
+          {/* Sport & Team */}
           <div
             style={{
-              fontSize: '0.68rem',
-              fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.1em',
+              fontSize: '0.7rem',
+              fontWeight: 600,
               textTransform: 'uppercase',
-              color: '#71717a',
-              marginBottom: '0.3rem',
+              letterSpacing: '0.04em',
+              color: '#64748b',
+              marginBottom: '0.25rem',
             }}
           >
-            {jersey.sport} // {jersey.team}
+            {jersey.sport} • {jersey.team}
           </div>
 
-          {/* Player Name */}
+          {/* Player & Title */}
           <h3
             onClick={() => setQuickViewJersey(jersey)}
             style={{
               fontFamily: 'var(--font-primary)',
               fontSize: '1.05rem',
               fontWeight: 700,
-              lineHeight: 1.25,
+              lineHeight: 1.3,
               color: '#ffffff',
-              textTransform: 'uppercase',
               cursor: 'pointer',
               marginBottom: '0.2rem',
             }}
@@ -283,7 +294,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
             {jersey.player} {jersey.playerNumber ? `#${jersey.playerNumber}` : ''}
           </h3>
 
-          <div style={{ fontSize: '0.72rem', color: '#a1a1aa' }}>
+          <div style={{ fontSize: '0.75rem', color: '#94a3b8', lineHeight: 1.4 }}>
             {jersey.edition}
           </div>
         </div>
@@ -299,46 +310,45 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
           }}
         >
           <div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.45rem' }}>
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
                   fontSize: '1.25rem',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   color: '#ffffff',
-                  letterSpacing: '-0.02em',
                 }}
               >
-                NPR {jersey.price.toLocaleString()}
+                रू {jersey.price.toLocaleString()}
               </span>
               {jersey.originalPrice && (
                 <span
                   style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.78rem',
-                    color: '#71717a',
+                    fontSize: '0.8rem',
+                    color: '#64748b',
                     textDecoration: 'line-through',
                   }}
                 >
-                  NPR {jersey.originalPrice.toLocaleString()}
+                  रू {jersey.originalPrice.toLocaleString()}
                 </span>
               )}
             </div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#71717a' }}>
-              STOCK: {jersey.stock} UNITS
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: jersey.stock <= 5 ? '#f87171' : '#10b981' }} />
+              <span style={{ fontSize: '0.68rem', color: jersey.stock <= 5 ? '#f87171' : '#94a3b8' }}>
+                {jersey.stock <= 5 ? `Low Stock (${jersey.stock} left)` : `${jersey.stock} units ready`}
+              </span>
             </div>
           </div>
 
           <button
             onClick={() => setQuickViewJersey(jersey)}
             style={{
-              background: 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              borderRadius: '6px',
               padding: '0.45rem 0.75rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.72rem',
+              fontSize: '0.75rem',
               fontWeight: 700,
-              letterSpacing: '0.08em',
               color: '#ffffff',
               cursor: 'pointer',
               display: 'flex',
@@ -347,7 +357,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
               transition: 'var(--transition)',
             }}
           >
-            <span>CUSTOMIZE</span>
+            <span>Customize</span>
             <ArrowUpRight size={13} />
           </button>
         </div>

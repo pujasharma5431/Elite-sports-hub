@@ -31,9 +31,10 @@ export const Navbar: React.FC = () => {
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: 'rgba(0, 0, 0, 0.95)',
+        background: 'rgba(8, 9, 13, 0.92)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
       }}
     >
       <div
@@ -42,12 +43,12 @@ export const Navbar: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingTop: '1rem',
-          paddingBottom: '1rem',
-          gap: '1.5rem',
+          paddingTop: '0.85rem',
+          paddingBottom: '0.85rem',
+          gap: '1.25rem',
         }}
       >
-        {/* Brand / Minimalist Wordmark */}
+        {/* Brand / Logo */}
         <div
           id="brand-logo"
           onClick={() => handleCategoryClick('all')}
@@ -61,35 +62,33 @@ export const Navbar: React.FC = () => {
             style={{
               fontFamily: 'var(--font-primary)',
               fontWeight: 800,
-              fontSize: '1.25rem',
-              letterSpacing: '0.08em',
+              fontSize: '1.3rem',
+              letterSpacing: '-0.02em',
               lineHeight: 1,
               color: '#ffffff',
-              textTransform: 'uppercase',
             }}
           >
             ELITE SPORTS HUB
           </div>
           <div
             style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.62rem',
-              letterSpacing: '0.2em',
-              color: '#71717a',
-              textTransform: 'uppercase',
+              fontSize: '0.66rem',
+              letterSpacing: '0.12em',
+              color: '#64748b',
               marginTop: '0.2rem',
               fontWeight: 600,
+              textTransform: 'uppercase',
             }}
           >
-            KATHMANDU // EDITION 2026
+            Kathmandu • Edition 2026
           </div>
         </div>
 
-        {/* Minimal Search Bar */}
+        {/* Search Bar */}
         <div
           style={{
             flex: '1',
-            maxWidth: '360px',
+            maxWidth: '320px',
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
@@ -97,23 +96,23 @@ export const Navbar: React.FC = () => {
         >
           <Search
             size={15}
-            color="#71717a"
-            style={{ position: 'absolute', left: '14px', pointerEvents: 'none' }}
+            color="#64748b"
+            style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
           />
           <input
             id="global-search-input"
             type="text"
             className="form-input"
-            placeholder="SEARCH PLAYER, TEAM, EDITION..."
+            placeholder="Search player, team, edition..."
             value={filters.search}
             onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
             style={{
-              paddingLeft: '2.5rem',
-              fontSize: '0.78rem',
+              paddingLeft: '2.3rem',
+              fontSize: '0.82rem',
               height: '38px',
-              borderRadius: '4px',
-              fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.04em',
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           />
           {filters.search && (
@@ -121,10 +120,10 @@ export const Navbar: React.FC = () => {
               onClick={() => setFilters((prev) => ({ ...prev, search: '' }))}
               style={{
                 position: 'absolute',
-                right: '12px',
+                right: '10px',
                 background: 'transparent',
                 border: 'none',
-                color: '#a1a1aa',
+                color: '#94a3b8',
                 cursor: 'pointer',
                 fontSize: '0.8rem',
               }}
@@ -139,16 +138,16 @@ export const Navbar: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.25rem',
+            gap: '0.35rem',
           }}
           className="desktop-nav"
         >
           {[
-            { id: 'all', label: 'ALL KITS', nepal: false },
-            { id: 'all', label: 'NEPAL SQUAD', nepal: true },
-            { id: 'cricket', label: 'CRICKET', nepal: false },
-            { id: 'football', label: 'FOOTBALL', nepal: false },
-            { id: 'limited-edition', label: 'LIMITED 1/500', nepal: false },
+            { id: 'all', label: 'All Kits', nepal: false },
+            { id: 'all', label: '🇳🇵 Nepal Squad', nepal: true },
+            { id: 'cricket', label: 'Cricket', nepal: false },
+            { id: 'football', label: 'Football', nepal: false },
+            { id: 'limited-edition', label: '★ Limited 1/500', nepal: false },
           ].map((cat, i) => {
             const isSel = cat.nepal
               ? filters.nepalOnly
@@ -159,14 +158,12 @@ export const Navbar: React.FC = () => {
                 onClick={() => handleCategoryClick(cat.id as any, cat.nepal)}
                 style={{
                   background: isSel ? '#ffffff' : 'transparent',
-                  color: isSel ? '#000000' : '#a1a1aa',
+                  color: isSel ? '#08090d' : '#94a3b8',
                   border: isSel ? '1px solid #ffffff' : '1px solid transparent',
                   padding: '0.45rem 0.85rem',
-                  borderRadius: '4px',
-                  fontSize: '0.75rem',
-                  fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.06em',
-                  fontWeight: 700,
+                  borderRadius: '9999px',
+                  fontSize: '0.82rem',
+                  fontWeight: isSel ? 700 : 500,
                   cursor: 'pointer',
                   transition: 'var(--transition)',
                 }}
@@ -187,26 +184,25 @@ export const Navbar: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
-              background: 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              borderRadius: '4px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#cbd5e1',
+              borderRadius: '8px',
               padding: '0.45rem 0.75rem',
-              fontSize: '0.72rem',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 700,
+              fontSize: '0.75rem',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
             title="Sanity CMS Connection Status"
           >
-            <Database size={12} />
-            <span>{sanityConfig.isConnected ? 'SANITY LINKED' : 'SANITY CMS'}</span>
+            <Database size={13} color="#94a3b8" />
+            <span>{sanityConfig.isConnected ? 'Sanity Live' : 'Sanity CMS'}</span>
             <span
               style={{
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                background: sanityConfig.isConnected ? '#ffffff' : '#71717a',
+                background: sanityConfig.isConnected ? '#10b981' : '#64748b',
               }}
             />
           </button>
@@ -219,32 +215,35 @@ export const Navbar: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
-              background: 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              borderRadius: '4px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#cbd5e1',
+              borderRadius: '8px',
               padding: '0.45rem 0.75rem',
-              fontSize: '0.72rem',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 700,
+              fontSize: '0.75rem',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
             title="Store Stock & Product Management"
           >
-            <Sliders size={12} />
-            <span>INVENTORY</span>
+            <Sliders size={13} color="#94a3b8" />
+            <span>Inventory</span>
           </button>
 
           {/* Wishlist */}
           <div
             id="wishlist-counter-btn"
+            onClick={() => {
+              const el = document.getElementById('catalog-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
             style={{
               position: 'relative',
-              background: 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               width: '38px',
               height: '38px',
-              borderRadius: '4px',
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -253,23 +252,23 @@ export const Navbar: React.FC = () => {
             }}
             title="Wishlist"
           >
-            <Heart size={16} fill={wishlist.length > 0 ? '#ffffff' : 'none'} />
+            <Heart size={16} fill={wishlist.length > 0 ? '#ef4444' : 'none'} color={wishlist.length > 0 ? '#ef4444' : '#cbd5e1'} />
             {wishlist.length > 0 && (
               <span
                 style={{
                   position: 'absolute',
                   top: '-4px',
                   right: '-4px',
-                  background: '#ffffff',
-                  color: '#000000',
+                  background: '#ef4444',
+                  color: '#ffffff',
                   borderRadius: '50%',
                   fontSize: '0.62rem',
-                  width: '15px',
-                  height: '15px',
+                  width: '16px',
+                  height: '16px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontWeight: 900,
+                  fontWeight: 800,
                 }}
               >
                 {wishlist.length}
@@ -284,31 +283,31 @@ export const Navbar: React.FC = () => {
             style={{
               height: '38px',
               padding: '0 1rem',
-              borderRadius: '4px',
+              borderRadius: '8px',
               background: '#ffffff',
-              color: '#000000',
+              color: '#08090d',
               border: '1px solid #ffffff',
               display: 'flex',
               alignItems: 'center',
               gap: '0.45rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.78rem',
-              fontWeight: 800,
+              fontSize: '0.82rem',
+              fontWeight: 700,
               cursor: 'pointer',
+              transition: 'var(--transition)',
             }}
           >
             <ShoppingBag size={15} />
-            <span>BAG</span>
+            <span>Bag</span>
             {cartCount > 0 && (
               <span
                 id="cart-badge-count"
                 style={{
-                  background: '#000000',
+                  background: '#ef4444',
                   color: '#ffffff',
-                  borderRadius: 'var(--radius-full)',
+                  borderRadius: '9999px',
                   padding: '0.1rem 0.45rem',
                   fontSize: '0.68rem',
-                  fontWeight: 900,
+                  fontWeight: 800,
                 }}
               >
                 {cartCount}

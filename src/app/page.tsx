@@ -16,9 +16,10 @@ import {
   Sparkles,
   Truck,
   RotateCcw,
-  Shield,
+  ShieldCheck,
   SlidersHorizontal,
-  CheckCircle,
+  Flame,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function ShopPage() {
@@ -31,17 +32,17 @@ export default function ShopPage() {
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   return (
-    <main style={{ minHeight: '100vh', background: '#06080d', color: '#f8fafc' }}>
-      {/* 1. Cinematic Nike/Adidas Flagship Hero */}
+    <main style={{ minHeight: '100vh', background: '#08090d', color: '#f1f5f9' }}>
+      {/* 1. Cinematic Flagship Hero */}
       <ModernNikeHero />
 
-      {/* 2. Trending Drops & Hype Releases Carousel */}
+      {/* 2. Trending Drops & Collector Editions Carousel */}
       <TrendingDropsCarousel />
 
-      {/* 3. Interactive Kit Customizer ("Elite By You") */}
+      {/* 3. Interactive Kit Customizer Studio */}
       <JerseyCustomizerSection />
 
-      {/* 4. Sticky Nike-Style Modern Filter Bar */}
+      {/* 4. Sticky Modern Filter Bar */}
       <div id="catalog-section">
         <NikeFilterBar gridCols={gridCols} setGridCols={setGridCols} />
       </div>
@@ -54,8 +55,8 @@ export default function ShopPage() {
               <div className="pulse-animation" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
                 ⚡
               </div>
-              <p style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.1em', fontSize: '1.2rem' }}>
-                LOADING RELEASES FROM SANITY CMS...
+              <p style={{ letterSpacing: '0.05em', fontSize: '1.1rem', fontWeight: 600 }}>
+                Loading jerseys from Sanity Content Lake...
               </p>
             </div>
           ) : filteredJerseys.length === 0 ? (
@@ -64,7 +65,7 @@ export default function ShopPage() {
                 textAlign: 'center',
                 padding: '4rem 2rem',
                 background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px dashed rgba(255, 255, 255, 0.1)',
+                border: '1px dashed rgba(255, 255, 255, 0.12)',
                 borderRadius: '16px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -74,23 +75,23 @@ export default function ShopPage() {
             >
               <div
                 style={{
-                  width: '64px',
-                  height: '64px',
+                  width: '60px',
+                  height: '60px',
                   borderRadius: '50%',
-                  background: 'rgba(230, 57, 70, 0.1)',
+                  background: 'rgba(239, 68, 68, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#e63946',
+                  color: '#ef4444',
                 }}
               >
-                <SlidersHorizontal size={30} />
+                <SlidersHorizontal size={28} />
               </div>
-              <h3 style={{ fontSize: '1.35rem', color: '#ffffff', fontFamily: 'var(--font-display)' }}>
-                NO RELEASES FOUND FOR THIS SELECTION
+              <h3 style={{ fontSize: '1.25rem', color: '#ffffff' }}>
+                No Kits Found for this Filter
               </h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.85rem', maxWidth: '420px' }}>
-                Adjust your size, player, or team filter to discover other official jerseys available in our Kathmandu hub.
+              <p style={{ color: '#94a3b8', fontSize: '0.88rem', maxWidth: '420px', lineHeight: 1.5 }}>
+                Try adjusting your category, size, or athlete filter to explore other official match issues.
               </p>
               <button onClick={resetFilters} className="btn btn-primary" style={{ padding: '0.65rem 1.4rem' }}>
                 <RotateCcw size={15} />
@@ -117,13 +118,13 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* 6. Brand Specifications & Nepal Dispatch Strip */}
+      {/* 6. Brand Perks & Nepal Dispatch Strip */}
       <section
         style={{
           padding: '3.5rem 0',
-          background: '#040404',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          background: '#0a0c12',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         }}
       >
         <div className="container">
@@ -134,78 +135,88 @@ export default function ShopPage() {
               gap: '2rem',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.1em', color: '#71717a' }}>
-                // LOGISTICS 01
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Truck size={18} color="#f87171" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
+                  Same-Day Kathmandu Dispatch
+                </h4>
               </div>
-              <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                NEPAL EXPRESS DISPATCH
-              </h4>
-              <p style={{ fontSize: '0.78rem', color: '#a1a1aa', lineHeight: 1.5 }}>
-                Same-day dispatch in Kathmandu Valley (free over NPR 3,500). 2-3 business days delivery across all 77 districts of Nepal.
+              <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
+                Orders placed before 2 PM dispatched same-day in Kathmandu Valley. Rapid courier delivery to all 77 districts of Nepal.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.1em', color: '#71717a' }}>
-                // FABRICATION 02
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ShieldCheck size={18} color="#10b981" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
+                  Authentic Player Match Grade
+                </h4>
               </div>
-              <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                PLAYER MATCH GRADE
-              </h4>
-              <p style={{ fontSize: '0.78rem', color: '#a1a1aa', lineHeight: 1.5 }}>
-                Sublimated moisture-control poly knit, silicone crests, and tournament specification heat-pressed lettering.
+              <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
+                Breathable AeroVent™ poly-mesh, moisture-wicking technology, and authentic silicone club and national crests.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.1em', color: '#71717a' }}>
-                // WORKSHOP 03
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Sparkles size={18} color="#fbbf24" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
+                  Thermal-Press Custom Studio
+                </h4>
               </div>
-              <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                CUSTOM NAME & NUMBER
-              </h4>
-              <p style={{ fontSize: '0.78rem', color: '#a1a1aa', lineHeight: 1.5 }}>
-                Applied in Kathmandu using authentic tournament fonts and temperature-controlled heat application.
+              <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
+                Personalize your kit with official tournament typography, heat-pressed with precision at our Kathmandu studio.
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.1em', color: '#71717a' }}>
-                // ASSURANCE 04
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <RotateCcw size={18} color="#60a5fa" />
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
+                  Hassle-Free Size Exchange
+                </h4>
               </div>
-              <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                SEAMLESS SIZE EXCHANGE
-              </h4>
-              <p style={{ fontSize: '0.78rem', color: '#a1a1aa', lineHeight: 1.5 }}>
-                Hassle-free 7-day size replacement guarantee. Cash on Delivery, eSewa, and Khalti accepted across Nepal.
+              <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
+                7-day easy size exchange guarantee. Secure payments via Cash on Delivery, eSewa, and Khalti across Nepal.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. Minimalist Black & White Footer */}
-      <footer style={{ padding: '3.5rem 0', background: '#000000', textAlign: 'center', color: '#71717a', fontSize: '0.8rem' }}>
-        <div className="container">
+      {/* 7. Modern Brand Footer */}
+      <footer style={{ padding: '3.5rem 0 2.5rem 0', background: '#06070a', color: '#94a3b8', fontSize: '0.82rem' }}>
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', textAlign: 'center' }}>
           <div
             style={{
               fontFamily: 'var(--font-primary)',
-              fontSize: '1.2rem',
+              fontSize: '1.3rem',
               fontWeight: 800,
-              letterSpacing: '0.1em',
+              letterSpacing: '-0.02em',
               color: '#ffffff',
-              marginBottom: '0.5rem',
             }}
           >
-            ELITE SPORTS HUB // KATHMANDU
+            ELITE SPORTS HUB
           </div>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-            © 2026 ELITE SPORTS HUB NEPAL. ARCHIVE EDITION.
+          <p style={{ maxWidth: '500px', lineHeight: 1.5, fontSize: '0.85rem' }}>
+            Nepal’s premier destination for official cricket, world football, and numbered limited edition collector jerseys.
           </p>
-          <p style={{ marginTop: '0.35rem', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#52525b' }}>
-            CONNECTED TO SANITY CMS // PROJECT ID: cfa5sriy
-          </p>
+
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center', fontSize: '0.8rem', color: '#cbd5e1' }}>
+            <span>🇳🇵 Kathmandu Valley</span>
+            <span>•</span>
+            <span>Cash on Delivery</span>
+            <span>•</span>
+            <span>eSewa</span>
+            <span>•</span>
+            <span>Khalti</span>
+          </div>
+
+          <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>
+            © 2026 Elite Sports Hub Nepal. All rights reserved. • Connected to Sanity CMS (Project: <code style={{ color: '#ffffff' }}>cfa5sriy</code>)
+          </div>
         </div>
       </footer>
 

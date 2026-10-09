@@ -3,22 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingBag, ArrowRight, ArrowDown, Sparkles, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import { JerseySize } from '../types/jersey';
 
 interface HeroEditorialDrop {
   id: string;
   serial: string;
-  sport: 'CRICKET' | 'FOOTBALL';
+  sport: 'Cricket' | 'Football';
   team: string;
   player: string;
   number: string;
   title: string;
-  edition: string;
+  subtitle: string;
   description: string;
   price: number;
   originalPrice?: number;
   image: string;
   jerseyId: string;
+  tag: string;
+  tagType: 'nepal' | 'gold' | 'sale' | 'emerald';
   specs: { label: string; val: string }[];
 }
 
@@ -26,102 +29,136 @@ const HERO_DROPS: HeroEditorialDrop[] = [
   {
     id: 'hero-nepal-rhinos',
     serial: 'REF. NEP-2024-CAP',
-    sport: 'CRICKET',
-    team: 'NEPAL NATIONAL CRICKET TEAM',
-    player: 'ROHIT PAUDEL',
+    sport: 'Cricket',
+    team: 'Nepal National Cricket Team',
+    player: 'Rohit Paudel',
     number: '17',
-    title: 'NEPAL RHINOS T20 WORLD CUP MATCH ISSUE',
-    edition: 'OFFICIAL MATCH ISSUE // 2024 EDITION',
-    description: 'The definitive jersey of the Nepal Rhinos. Engineered with Himalayan contour lines, breathable AeroVent™ poly-mesh, and national crest embroidery.',
+    title: 'Nepal Rhinos T20 World Cup Official Match Kit',
+    subtitle: 'Official Tournament Edition • Rohit Paudel #17',
+    description: 'The definitive jersey of the Nepal Rhinos. Engineered with Himalayan contour lines, lightweight AeroVent™ poly-mesh, and high-definition national crest embroidery.',
     price: 3200,
     originalPrice: 3800,
     image: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80',
     jerseyId: 'nep-cric-rohit-17',
+    tag: '🇳🇵 Nepal Squad Official',
+    tagType: 'nepal',
     specs: [
-      { label: 'DISPATCH', val: 'SAME-DAY KTM' },
-      { label: 'GRADE', val: 'PLAYER MATCH ISSUE' },
-      { label: 'STOCK', val: '24 UNITS READY' },
+      { label: 'Kathmandu Dispatch', val: 'Same-Day Delivery' },
+      { label: 'Tournament Grade', val: 'Player Match Issue' },
+      { label: 'Warehouse Stock', val: '24 Units Ready' },
     ],
   },
   {
     id: 'hero-messi-final',
     serial: 'REF. ARG-2022-LUS',
-    sport: 'FOOTBALL',
-    team: 'ARGENTINA NATIONAL SQUAD',
-    player: 'LIONEL MESSI',
+    sport: 'Football',
+    team: 'Argentina National Squad',
+    player: 'Lionel Messi',
     number: '10',
-    title: 'ARGENTINA 3-STAR LUSAIL GOLD-THREAD EDITION',
-    edition: 'LIMITED COLLECTOR ISSUE // NUMBERED 114 OF 500',
-    description: 'Commemorating the December 18 Lusail Stadium triumph. 3-star gold heat transfer crest, match date embroidery, and player specification fabric.',
+    title: 'Argentina 3-Star Lusail Gold Champions Edition',
+    subtitle: 'Numbered Collector Issue • 114 of 500 Worldwide',
+    description: 'Commemorating the Lusail Stadium world triumph. Features the 3-star gold heat transfer crest, match date embroidery, and player-specification jacquard knit.',
     price: 8999,
     originalPrice: 10500,
     image: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80',
     jerseyId: 'ltd-messi-wc-final',
+    tag: '★ 3-Star World Champions',
+    tagType: 'gold',
     specs: [
-      { label: 'RARITY', val: '114 / 500 CRAFTED' },
-      { label: 'STAMP', val: 'AUTHENTICATED' },
-      { label: 'STOCK', val: 'LAST 2 UNITS' },
+      { label: 'Limited Rarity', val: '114 / 500 Worldwide' },
+      { label: 'Authentication', val: 'Certificate Included' },
+      { label: 'Current Inventory', val: 'Last 2 Units' },
     ],
   },
   {
     id: 'hero-cr7-milestone',
     serial: 'REF. POR-900-GOAL',
-    sport: 'FOOTBALL',
-    team: 'PORTUGAL / ALL-TIME RECORD',
-    player: 'CRISTIANO RONALDO',
+    sport: 'Football',
+    team: 'Portugal National Team',
+    player: 'Cristiano Ronaldo',
     number: '07',
-    title: 'CRISTIANO RONALDO 900 CAREER GOALS EDITION',
-    edition: 'HISTORIC COLLECTOR // NUMBERED 087 OF 900',
-    description: 'Matte obsidian body with laser-cut gold detailing and career milestone timeline inside the collar. Pure football greatness.',
+    title: 'Cristiano Ronaldo 900 Career Goals Edition',
+    subtitle: 'Historic Collector Edition • 087 of 900 Worldwide',
+    description: 'Matte obsidian body with laser-cut gold detailing and career milestone timeline inside the collar. Crafted for true football collectors.',
     price: 8500,
     image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
     jerseyId: 'ltd-ronaldo-900',
+    tag: '⚡ 900 Goals Collector',
+    tagType: 'gold',
     specs: [
-      { label: 'SERIES', val: 'RECORD BREAKER' },
-      { label: 'EDITION', val: '087 / 900' },
-      { label: 'STOCK', val: '3 UNITS' },
+      { label: 'Milestone Issue', val: 'Record Breaker 087/900' },
+      { label: 'Fabric Grade', val: 'Pro-Vapor Engineered' },
+      { label: 'Kathmandu Stock', val: '3 Units Left' },
     ],
   },
   {
     id: 'hero-kohli-champions',
     serial: 'REF. IND-2024-T20',
-    sport: 'CRICKET',
-    team: 'TEAM INDIA NATIONAL CRICKET',
-    player: 'VIRAT KOHLI',
+    sport: 'Cricket',
+    team: 'Team India Cricket',
+    player: 'Virat Kohli',
     number: '18',
-    title: 'TEAM INDIA T20 WORLD CHAMPIONS BLUE',
-    edition: 'T20 WINNERS MATCH KIT // KING KOHLI #18',
-    description: 'The historic T20 World Cup champions kit worn by King Kohli with tricolor collar piping and dynamic breathability mesh.',
+    title: 'Team India T20 World Champions Victory Blue',
+    subtitle: 'King Kohli #18 • ICC T20 Tournament Winners Kit',
+    description: 'The historic T20 World Cup champions kit worn by King Kohli with tricolor collar piping, dynamic breathability mesh, and champion star crest.',
     price: 3850,
     originalPrice: 4400,
     image: 'https://images.unsplash.com/photo-1624526267942-ab0ff8a3e972?auto=format&fit=crop&w=1200&q=80',
     jerseyId: 'ind-cric-kohli-18',
+    tag: '🏆 T20 World Champions',
+    tagType: 'sale',
     specs: [
-      { label: 'TOURNAMENT', val: 'T20 CHAMPIONS' },
-      { label: 'BADGE', val: 'ICC OFFICIAL' },
-      { label: 'RATING', val: '4.9 / 5.0 (540+)' },
+      { label: 'Authentic Kit', val: 'ICC Official Issue' },
+      { label: 'Player Cut', val: 'Slim Athletic Fit' },
+      { label: 'Fan Rating', val: '4.9 ★ (540+ Reviews)' },
     ],
   },
 ];
 
 export const ModernNikeHero: React.FC = () => {
-  const { jerseys, setQuickViewJersey } = useStore();
+  const { jerseys, addToCart, setQuickViewJersey } = useStore();
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<JerseySize>('L');
+  const [addedToast, setAddedToast] = useState(false);
 
-  // Auto rotate drop every 7 seconds
+  // Auto rotate drop every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIdx((prev) => (prev + 1) % HERO_DROPS.length);
-    }, 7000);
+    }, 8000);
     return () => clearInterval(timer);
   }, []);
 
   const drop = HERO_DROPS[currentIdx];
 
-  const handleOpenDrop = () => {
+  const handleQuickAdd = () => {
+    const target = jerseys.find((j) => j.id === drop.jerseyId);
+    if (target) {
+      addToCart({
+        jerseyId: target.id,
+        jersey: target,
+        selectedSize,
+        selectedGender: 'men',
+        selectedColor: target.colors[0] || { name: 'Standard', hex: '#ffffff' },
+        quantity: 1,
+        price: target.price,
+      });
+      setAddedToast(true);
+      setTimeout(() => setAddedToast(false), 2200);
+    }
+  };
+
+  const handleOpenDetails = () => {
     const target = jerseys.find((j) => j.id === drop.jerseyId);
     if (target) {
       setQuickViewJersey(target);
+    }
+  };
+
+  const scrollToCustomizer = () => {
+    const el = document.getElementById('customizer-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -134,216 +171,297 @@ export const ModernNikeHero: React.FC = () => {
 
   return (
     <section
-      id="monochrome-editorial-hero"
+      id="modern-hero-showcase"
       style={{
         position: 'relative',
-        background: '#000000',
+        background: 'linear-gradient(180deg, #08090d 0%, #0d0f15 100%)',
         color: '#ffffff',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         paddingTop: '2.5rem',
         paddingBottom: '3.5rem',
         overflow: 'hidden',
       }}
     >
-      <div className="container">
-        {/* Top Monospaced Breadcrumb Strip */}
+      {/* Background Radial Glow */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-10%',
+          right: '5%',
+          width: '600px',
+          height: '600px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.04) 40%, transparent 70%)',
+          pointerEvents: 'none',
+          filter: 'blur(60px)',
+        }}
+      />
+
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+        {/* Top Header Pill Bar */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            paddingBottom: '0.85rem',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            paddingBottom: '1rem',
             marginBottom: '2.5rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            letterSpacing: '0.1em',
-            color: '#a1a1aa',
-            textTransform: 'uppercase',
+            flexWrap: 'wrap',
+            gap: '1rem',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ color: '#ffffff', fontWeight: 700 }}>[ {drop.serial} ]</span>
-            <span>//</span>
-            <span>{drop.sport} DIVISION</span>
-            <span>//</span>
-            <span>{drop.team}</span>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                padding: '0.3rem 0.75rem',
+                borderRadius: '9999px',
+                fontSize: '0.75rem',
+                color: '#e2e8f0',
+                fontWeight: 600,
+              }}
+            >
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10b981' }} className="pulse-animation" />
+              <span>Kathmandu Central Vault • Official 2024–2026 Drops</span>
+            </span>
+
+            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>//</span>
+            <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>{drop.serial}</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <span>KATHMANDU WAREHOUSE: ACTIVE</span>
-            <span style={{ color: '#ffffff', fontWeight: 700 }}>
-              0{currentIdx + 1} / 0{HERO_DROPS.length}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+              Drop <strong style={{ color: '#ffffff' }}>0{currentIdx + 1}</strong> of <strong>0{HERO_DROPS.length}</strong>
             </span>
           </div>
         </div>
 
-        {/* 2-Column Architectural Stage */}
+        {/* 2-Column Showcase */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(320px, 1.2fr) minmax(320px, 1fr)',
-            gap: '4rem',
+            gridTemplateColumns: 'minmax(320px, 1.25fr) minmax(320px, 1fr)',
+            gap: '3.5rem',
             alignItems: 'center',
           }}
           className="hero-main-grid"
         >
-          {/* Left: Stark Swiss Typography & Specifications */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Player Stencil Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          {/* Left Column: Clean Modern Headline & Actions */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            {/* Tag & Athlete Stencil */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.8rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.15em',
-                  padding: '0.3rem 0.65rem',
-                  border: '1px solid #ffffff',
-                  color: '#ffffff',
-                }}
-              >
-                #{drop.number}
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.8rem',
+                  background:
+                    drop.tagType === 'nepal'
+                      ? 'rgba(239, 68, 68, 0.15)'
+                      : drop.tagType === 'gold'
+                      ? 'rgba(245, 158, 11, 0.15)'
+                      : 'rgba(59, 130, 246, 0.15)',
+                  border:
+                    drop.tagType === 'nepal'
+                      ? '1px solid rgba(239, 68, 68, 0.4)'
+                      : drop.tagType === 'gold'
+                      ? '1px solid rgba(245, 158, 11, 0.4)'
+                      : '1px solid rgba(59, 130, 246, 0.4)',
+                  color:
+                    drop.tagType === 'nepal'
+                      ? '#f87171'
+                      : drop.tagType === 'gold'
+                      ? '#fbbf24'
+                      : '#60a5fa',
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
                   fontWeight: 700,
-                  letterSpacing: '0.15em',
-                  color: '#a1a1aa',
+                  letterSpacing: '0.02em',
                 }}
               >
-                {drop.player}
+                {drop.tag}
+              </span>
+
+              <span
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  color: '#ffffff',
+                  padding: '0.3rem 0.65rem',
+                  borderRadius: '6px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                #{drop.number} {drop.player}
               </span>
             </div>
 
-            {/* Giant Monochromatic Headline */}
+            {/* Main Headline */}
             <h1
               style={{
                 fontFamily: 'var(--font-primary)',
-                fontSize: 'clamp(2.4rem, 4.8vw, 4.4rem)',
-                lineHeight: 0.95,
+                fontSize: 'clamp(2.2rem, 3.8vw, 3.5rem)',
+                lineHeight: 1.12,
                 fontWeight: 800,
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.025em',
                 color: '#ffffff',
-                textTransform: 'uppercase',
               }}
             >
               {drop.title}
             </h1>
 
-            {/* Subtitle / Edition */}
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.82rem',
-                letterSpacing: '0.08em',
-                color: '#d4d4d8',
-                borderLeft: '2px solid #ffffff',
-                paddingLeft: '0.85rem',
-              }}
-            >
-              {drop.edition}
+            {/* Subtitle */}
+            <div style={{ color: '#cbd5e1', fontSize: '0.95rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ width: '4px', height: '18px', background: '#ffffff', borderRadius: '2px' }} />
+              <span>{drop.subtitle}</span>
             </div>
 
             {/* Description */}
             <p
               style={{
                 fontSize: '0.95rem',
-                color: '#a1a1aa',
+                color: '#94a3b8',
                 lineHeight: 1.6,
-                maxWidth: '520px',
+                maxWidth: '540px',
               }}
             >
               {drop.description}
             </p>
 
-            {/* Price Row */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+            {/* Size Selector Strip */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
+              <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span>Select Your Fit:</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>Size {selectedSize}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {(['S', 'M', 'L', 'XL', 'XXL'] as JerseySize[]).map((sz) => {
+                  const isSel = selectedSize === sz;
+                  return (
+                    <button
+                      key={sz}
+                      onClick={() => setSelectedSize(sz)}
+                      style={{
+                        width: '42px',
+                        height: '38px',
+                        borderRadius: '6px',
+                        border: isSel ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                        background: isSel ? '#ffffff' : 'rgba(255, 255, 255, 0.04)',
+                        color: isSel ? '#08090d' : '#cbd5e1',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'var(--transition)',
+                      }}
+                    >
+                      {sz}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Price & Value Row */}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.85rem', marginTop: '0.25rem' }}>
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '2.4rem',
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
+                  fontSize: '2rem',
+                  fontWeight: 800,
                   color: '#ffffff',
+                  fontFamily: 'var(--font-primary)',
                 }}
               >
-                NPR {drop.price.toLocaleString()}
+                रू {drop.price.toLocaleString()}
               </span>
               {drop.originalPrice && (
                 <span
                   style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '1.15rem',
-                    color: '#71717a',
+                    fontSize: '1.05rem',
+                    color: '#64748b',
                     textDecoration: 'line-through',
                   }}
                 >
-                  NPR {drop.originalPrice.toLocaleString()}
+                  रू {drop.originalPrice.toLocaleString()}
+                </span>
+              )}
+              {drop.originalPrice && (
+                <span
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    color: '#f87171',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '4px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  Save रू {(drop.originalPrice - drop.price).toLocaleString()}
                 </span>
               )}
             </div>
 
-            {/* Stark Monochromatic Specs Grid */}
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+              <button
+                id="hero-quick-add-btn"
+                onClick={handleQuickAdd}
+                className="btn btn-primary"
+                style={{
+                  height: '46px',
+                  padding: '0 1.6rem',
+                  fontSize: '0.88rem',
+                }}
+              >
+                <ShoppingBag size={17} />
+                <span>{addedToast ? 'Added to Bag ✓' : `Add Size ${selectedSize} to Bag`}</span>
+              </button>
+
+              <button
+                id="hero-customize-nav-btn"
+                onClick={scrollToCustomizer}
+                className="btn btn-secondary"
+                style={{
+                  height: '46px',
+                  padding: '0 1.4rem',
+                  fontSize: '0.88rem',
+                }}
+              >
+                <Sparkles size={16} />
+                <span>Custom Name & #</span>
+              </button>
+            </div>
+
+            {/* Specs Grid */}
             <div
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                padding: '0.85rem 0',
-                gap: '1rem',
+                gap: '0.75rem',
+                marginTop: '0.75rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                paddingTop: '1rem',
               }}
             >
               {drop.specs.map((s, idx) => (
-                <div key={idx}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#71717a', letterSpacing: '0.1em' }}>
+                <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '8px', padding: '0.65rem 0.75rem' }}>
+                  <div style={{ fontSize: '0.68rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     {s.label}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#ffffff', fontWeight: 700, marginTop: '0.2rem' }}>
+                  <div style={{ fontSize: '0.82rem', color: '#ffffff', fontWeight: 600, marginTop: '0.2rem' }}>
                     {s.val}
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
-              <button
-                id="hero-buy-now-btn"
-                onClick={handleOpenDrop}
-                className="btn btn-primary"
-                style={{
-                  height: '48px',
-                  padding: '0 2rem',
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                <ShoppingBag size={16} />
-                <span>CUSTOMIZE & ORDER</span>
-              </button>
-
-              <button
-                id="hero-scroll-catalog-btn"
-                onClick={scrollToCatalog}
-                className="btn btn-secondary"
-                style={{
-                  height: '48px',
-                  padding: '0 1.6rem',
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.08em',
-                }}
-              >
-                <span>EXPLORE ALL 19 KITS</span>
-                <ArrowDownIcon size={14} />
-              </button>
-            </div>
           </div>
 
-          {/* Right: Crisp Architectural Product Frame with Pure B&W Aesthetic */}
+          {/* Right Column: Hero Visual Container & Slide Selector */}
           <div
             style={{
               position: 'relative',
@@ -352,18 +470,21 @@ export const ModernNikeHero: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            {/* Minimalist Stark Frame */}
+            {/* Visual Box */}
             <div
-              onClick={handleOpenDrop}
+              onClick={handleOpenDetails}
               style={{
                 position: 'relative',
                 width: '100%',
                 maxWidth: '460px',
-                height: '520px',
-                background: '#0a0a0a',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                height: '490px',
+                background: '#11141c',
+                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 cursor: 'pointer',
                 overflow: 'hidden',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)',
+                transition: 'transform 0.3s ease, border-color 0.3s ease',
               }}
             >
               <Image
@@ -377,140 +498,129 @@ export const ModernNikeHero: React.FC = () => {
                 }}
               />
 
-              {/* Minimal Dark Gradient Vignette */}
+              {/* Gradient Vignette */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)',
+                  background: 'linear-gradient(to top, rgba(8, 9, 13, 0.95) 0%, rgba(8, 9, 13, 0.15) 50%, rgba(8, 9, 13, 0.3) 100%)',
                 }}
               />
 
-              {/* Stencil Top Tag */}
+              {/* Floating Athlete Badge */}
               <div
                 style={{
                   position: 'absolute',
                   top: '16px',
                   left: '16px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.1em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  background: 'rgba(8, 9, 13, 0.85)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: '9999px',
+                  padding: '0.35rem 0.75rem',
+                  fontSize: '0.75rem',
                   color: '#ffffff',
-                  background: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  padding: '0.3rem 0.6rem',
+                  fontWeight: 600,
                 }}
               >
-                {drop.serial}
+                <ShieldCheck size={14} color="#10b981" />
+                <span>Authentic Pro Issue</span>
               </div>
 
-              {/* Bottom Frame Details */}
+              {/* Bottom Card Strip */}
               <div
                 style={{
                   position: 'absolute',
                   bottom: '16px',
                   left: '16px',
                   right: '16px',
-                  background: 'rgba(0, 0, 0, 0.85)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  padding: '1rem',
+                  background: 'rgba(15, 17, 24, 0.88)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255, 255, 255, 0.14)',
+                  borderRadius: '12px',
+                  padding: '0.85rem 1rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }}
               >
                 <div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#71717a', letterSpacing: '0.1em' }}>
-                    OFFICIAL ATHLETE ISSUE
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    {drop.team}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-primary)', fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#ffffff', marginTop: '0.1rem' }}>
                     {drop.player} #{drop.number}
                   </div>
                 </div>
 
                 <div
                   style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    color: '#ffffff',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.25rem',
+                    gap: '0.35rem',
+                    fontSize: '0.75rem',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    padding: '0.4rem 0.7rem',
+                    borderRadius: '6px',
                   }}
                 >
-                  <span>CUSTOMIZE</span>
-                  <ArrowUpRight size={14} />
+                  <span>Quick View</span>
+                  <ArrowRight size={13} />
                 </div>
               </div>
             </div>
 
-            {/* Slider Navigation Bar */}
+            {/* Thumbnail Navigation Strip */}
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                display: 'grid',
+                gridTemplateColumns: `repeat(${HERO_DROPS.length}, 1fr)`,
+                gap: '0.65rem',
                 width: '100%',
                 maxWidth: '460px',
-                marginTop: '1.25rem',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
+                marginTop: '1rem',
               }}
             >
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button
-                  onClick={() => setCurrentIdx((p) => (p === 0 ? HERO_DROPS.length - 1 : p - 1))}
-                  style={{
-                    background: 'transparent',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    width: '36px',
-                    height: '36px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <button
-                  onClick={() => setCurrentIdx((p) => (p + 1) % HERO_DROPS.length)}
-                  style={{
-                    background: 'transparent',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    width: '36px',
-                    height: '36px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-
-              {/* Progress indicators */}
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                {HERO_DROPS.map((_, i) => (
+              {HERO_DROPS.map((h, i) => {
+                const isActive = currentIdx === i;
+                return (
                   <button
-                    key={i}
+                    key={h.id}
                     onClick={() => setCurrentIdx(i)}
                     style={{
-                      width: currentIdx === i ? '24px' : '8px',
-                      height: '2px',
-                      background: currentIdx === i ? '#ffffff' : 'rgba(255, 255, 255, 0.25)',
-                      border: 'none',
+                      background: isActive ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.03)',
+                      border: isActive ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '8px',
+                      padding: '0.5rem 0.6rem',
                       cursor: 'pointer',
-                      transition: 'all 0.3s ease',
+                      textAlign: 'left',
+                      transition: 'var(--transition)',
                     }}
-                  />
-                ))}
-              </div>
+                  >
+                    <div style={{ fontSize: '0.65rem', color: isActive ? '#f87171' : '#64748b', fontWeight: 700 }}>
+                      0{i + 1} // {h.sport}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '0.72rem',
+                        color: isActive ? '#ffffff' : '#94a3b8',
+                        fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginTop: '0.1rem',
+                      }}
+                    >
+                      {h.player}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -518,12 +628,3 @@ export const ModernNikeHero: React.FC = () => {
     </section>
   );
 };
-
-function ArrowDownIcon({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="5" x2="12" y2="19"></line>
-      <polyline points="19 12 12 19 5 12"></polyline>
-    </svg>
-  );
-}

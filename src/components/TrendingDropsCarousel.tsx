@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useStore } from '../context/StoreContext';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Flame } from 'lucide-react';
 
 export const TrendingDropsCarousel: React.FC = () => {
   const { jerseys, setQuickViewJersey } = useStore();
@@ -17,19 +17,19 @@ export const TrendingDropsCarousel: React.FC = () => {
       id="trending-drops-reel"
       style={{
         padding: '3.5rem 0',
-        background: '#050505',
+        background: '#07080b',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
       }}
     >
       <div className="container">
-        {/* Editorial Section Header */}
+        {/* Section Header */}
         <div
           style={{
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'space-between',
             marginBottom: '2rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             paddingBottom: '1rem',
             flexWrap: 'wrap',
             gap: '1rem',
@@ -38,32 +38,36 @@ export const TrendingDropsCarousel: React.FC = () => {
           <div>
             <div
               style={{
-                fontSize: '0.72rem',
-                fontFamily: 'var(--font-mono)',
-                letterSpacing: '0.15em',
-                color: '#a1a1aa',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontSize: '0.75rem',
+                color: '#f87171',
+                fontWeight: 700,
                 textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                marginBottom: '0.25rem',
               }}
             >
-              CURATED RELEASES // KATHMANDU VAULT
+              <Flame size={13} />
+              <span>Curated Releases • Kathmandu Vault</span>
             </div>
             <h3
               style={{
                 fontFamily: 'var(--font-primary)',
-                fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)',
-                lineHeight: 1,
+                fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
+                lineHeight: 1.15,
                 fontWeight: 800,
                 color: '#ffffff',
-                textTransform: 'uppercase',
-                marginTop: '0.35rem',
+                letterSpacing: '-0.02em',
               }}
             >
-              SELECTED MATCH ISSUES
+              Headline Match Drops
             </h3>
           </div>
 
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#71717a', letterSpacing: '0.08em' }}>
-            LIMITED PRODUCTION // NUMBERED SPECIFICATIONS
+          <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+            Limited production & official squad kits ready for dispatch.
           </div>
         </div>
 
@@ -82,14 +86,17 @@ export const TrendingDropsCarousel: React.FC = () => {
               style={{
                 position: 'relative',
                 height: '420px',
-                background: '#090909',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                background: '#0e1118',
+                borderRadius: '14px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 cursor: 'pointer',
+                overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
                 padding: '1.5rem',
                 transition: 'all 0.3s ease',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
               }}
             >
               <Image
@@ -106,7 +113,7 @@ export const TrendingDropsCarousel: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(to top, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.2) 100%)',
+                    'linear-gradient(to top, rgba(7, 8, 11, 0.96) 0%, rgba(7, 8, 11, 0.25) 50%, rgba(7, 8, 11, 0.15) 100%)',
                 }}
               />
 
@@ -114,8 +121,8 @@ export const TrendingDropsCarousel: React.FC = () => {
               <div
                 style={{
                   position: 'absolute',
-                  top: '16px',
-                  left: '16px',
+                  top: '14px',
+                  left: '14px',
                   display: 'flex',
                   gap: '0.4rem',
                   zIndex: 2,
@@ -124,47 +131,48 @@ export const TrendingDropsCarousel: React.FC = () => {
                 {item.isLimitedEdition && (
                   <span
                     style={{
-                      fontFamily: 'var(--font-mono)',
                       fontSize: '0.68rem',
-                      letterSpacing: '0.1em',
-                      padding: '0.2rem 0.5rem',
-                      background: '#ffffff',
-                      color: '#000000',
+                      padding: '0.2rem 0.55rem',
+                      background: 'rgba(245, 158, 11, 0.2)',
+                      color: '#fbbf24',
+                      border: '1px solid rgba(245, 158, 11, 0.4)',
+                      borderRadius: '6px',
                       fontWeight: 700,
+                      backdropFilter: 'blur(6px)',
                     }}
                   >
-                    LIMITED 1/500
+                    ★ Limited 1/500
                   </span>
                 )}
                 {item.nepalSpecial && (
                   <span
                     style={{
-                      fontFamily: 'var(--font-mono)',
                       fontSize: '0.68rem',
-                      letterSpacing: '0.1em',
-                      padding: '0.2rem 0.5rem',
-                      background: 'rgba(0, 0, 0, 0.75)',
-                      border: '1px solid rgba(255, 255, 255, 0.3)',
-                      color: '#ffffff',
+                      padding: '0.2rem 0.55rem',
+                      background: 'rgba(239, 68, 68, 0.2)',
+                      border: '1px solid rgba(239, 68, 68, 0.4)',
+                      color: '#f87171',
+                      borderRadius: '6px',
                       fontWeight: 700,
+                      backdropFilter: 'blur(6px)',
                     }}
                   >
-                    NEPAL SQUAD
+                    🇳🇵 Nepal Squad
                   </span>
                 )}
               </div>
 
-              {/* Stencil Number in top right */}
+              {/* Squad Number in top right */}
               {item.playerNumber && (
                 <div
                   style={{
                     position: 'absolute',
-                    top: '16px',
-                    right: '16px',
+                    top: '14px',
+                    right: '14px',
                     fontFamily: 'var(--font-mono)',
                     fontSize: '1.2rem',
                     fontWeight: 800,
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: 'rgba(255, 255, 255, 0.45)',
                     zIndex: 2,
                   }}
                 >
@@ -176,14 +184,14 @@ export const TrendingDropsCarousel: React.FC = () => {
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <div
                   style={{
-                    fontSize: '0.7rem',
-                    fontFamily: 'var(--font-mono)',
-                    color: '#a1a1aa',
-                    letterSpacing: '0.1em',
+                    fontSize: '0.72rem',
+                    color: '#94a3b8',
+                    fontWeight: 600,
                     textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
                   }}
                 >
-                  {item.sport} // {item.team}
+                  {item.sport} • {item.team}
                 </div>
 
                 <h4
@@ -192,15 +200,14 @@ export const TrendingDropsCarousel: React.FC = () => {
                     fontSize: '1.15rem',
                     fontWeight: 700,
                     color: '#ffffff',
-                    lineHeight: 1.25,
-                    marginTop: '0.25rem',
-                    textTransform: 'uppercase',
+                    lineHeight: 1.3,
+                    marginTop: '0.2rem',
                   }}
                 >
-                  {item.player}
+                  {item.player} {item.playerNumber ? `#${item.playerNumber}` : ''}
                 </h4>
 
-                <div style={{ fontSize: '0.74rem', color: '#71717a', marginTop: '0.2rem' }}>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.15rem' }}>
                   {item.edition}
                 </div>
 
@@ -209,28 +216,29 @@ export const TrendingDropsCarousel: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop: '0.85rem',
+                    marginTop: '0.75rem',
                     paddingTop: '0.75rem',
                     borderTop: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.15rem', fontWeight: 700, color: '#ffffff' }}>
-                    NPR {item.price.toLocaleString()}
+                  <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
+                    रू {item.price.toLocaleString()}
                   </div>
 
                   <div
                     style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.72rem',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                       color: '#ffffff',
-                      letterSpacing: '0.08em',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.25rem',
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      padding: '0.35rem 0.65rem',
+                      borderRadius: '6px',
                     }}
                   >
-                    <span>VIEW ISSUE</span>
+                    <span>View Kit</span>
                     <ArrowUpRight size={13} />
                   </div>
                 </div>

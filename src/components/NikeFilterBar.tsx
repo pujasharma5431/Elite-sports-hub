@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { JerseySize } from '../types/jersey';
-import { SlidersHorizontal, RotateCcw } from 'lucide-react';
+import { SlidersHorizontal, RotateCcw, LayoutGrid, Grid3X3 } from 'lucide-react';
 
 const SIZES: JerseySize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
 
@@ -53,8 +53,10 @@ export const NikeFilterBar: React.FC<{
         position: 'sticky',
         top: '64px',
         zIndex: 35,
-        background: '#000000',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        background: 'rgba(8, 9, 13, 0.94)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '0.85rem 0',
       }}
     >
@@ -69,12 +71,12 @@ export const NikeFilterBar: React.FC<{
             flexWrap: 'wrap',
           }}
         >
-          {/* Left: Quick Category Chips (Monochrome minimal pills) */}
+          {/* Left: Quick Category Chips */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.4rem',
+              gap: '0.45rem',
               overflowX: 'auto',
               paddingBottom: '2px',
             }}
@@ -83,129 +85,117 @@ export const NikeFilterBar: React.FC<{
             <button
               onClick={() => setFilters((p) => ({ ...p, category: 'all', nepalOnly: false }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.category === 'all' && !filters.nepalOnly ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.category === 'all' && !filters.nepalOnly ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.12)',
                 background: filters.category === 'all' && !filters.nepalOnly ? '#ffffff' : 'transparent',
-                color: filters.category === 'all' && !filters.nepalOnly ? '#000000' : '#a1a1aa',
+                color: filters.category === 'all' && !filters.nepalOnly ? '#08090d' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'var(--transition)',
               }}
             >
-              ALL [{filteredJerseys.length}]
+              All Kits ({filteredJerseys.length})
             </button>
 
             {/* Nepal Squad */}
             <button
               onClick={() => setFilters((p) => ({ ...p, category: 'all', nepalOnly: !p.nepalOnly }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.nepalOnly ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
-                background: filters.nepalOnly ? '#ffffff' : 'transparent',
-                color: filters.nepalOnly ? '#000000' : '#a1a1aa',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.nepalOnly ? '1px solid #f87171' : '1px solid rgba(255,255,255,0.12)',
+                background: filters.nepalOnly ? 'rgba(239, 68, 68, 0.18)' : 'transparent',
+                color: filters.nepalOnly ? '#f87171' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'var(--transition)',
               }}
             >
-              NEPAL SQUAD
+              🇳🇵 Nepal Squad
             </button>
 
             {/* Cricket */}
             <button
               onClick={() => setFilters((p) => ({ ...p, category: p.category === 'cricket' ? 'all' : 'cricket', nepalOnly: false }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.category === 'cricket' ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.category === 'cricket' ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.12)',
                 background: filters.category === 'cricket' ? '#ffffff' : 'transparent',
-                color: filters.category === 'cricket' ? '#000000' : '#a1a1aa',
+                color: filters.category === 'cricket' ? '#08090d' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'var(--transition)',
               }}
             >
-              CRICKET
+              Cricket
             </button>
 
             {/* Football */}
             <button
               onClick={() => setFilters((p) => ({ ...p, category: p.category === 'football' ? 'all' : 'football', nepalOnly: false }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.category === 'football' ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.category === 'football' ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.12)',
                 background: filters.category === 'football' ? '#ffffff' : 'transparent',
-                color: filters.category === 'football' ? '#000000' : '#a1a1aa',
+                color: filters.category === 'football' ? '#08090d' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'var(--transition)',
               }}
             >
-              FOOTBALL
+              Football
             </button>
 
             {/* Limited */}
             <button
               onClick={() => setFilters((p) => ({ ...p, category: p.category === 'limited-edition' ? 'all' : 'limited-edition', nepalOnly: false }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.category === 'limited-edition' ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
-                background: filters.category === 'limited-edition' ? '#ffffff' : 'transparent',
-                color: filters.category === 'limited-edition' ? '#000000' : '#a1a1aa',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.category === 'limited-edition' ? '1px solid #fbbf24' : '1px solid rgba(255,255,255,0.12)',
+                background: filters.category === 'limited-edition' ? 'rgba(245, 158, 11, 0.18)' : 'transparent',
+                color: filters.category === 'limited-edition' ? '#fbbf24' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 transition: 'var(--transition)',
               }}
             >
-              LIMITED 1/500
+              ★ Limited 1/500
             </button>
 
             {/* Sale */}
             <button
               onClick={() => setFilters((p) => ({ ...p, isOnSaleOnly: !p.isOnSaleOnly }))}
               style={{
-                padding: '0.45rem 0.9rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                border: filters.isOnSaleOnly ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
-                background: filters.isOnSaleOnly ? '#ffffff' : 'transparent',
-                color: filters.isOnSaleOnly ? '#000000' : '#a1a1aa',
+                padding: '0.45rem 0.95rem',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                borderRadius: '9999px',
+                border: filters.isOnSaleOnly ? '1px solid #f87171' : '1px solid rgba(255,255,255,0.12)',
+                background: filters.isOnSaleOnly ? 'rgba(239, 68, 68, 0.18)' : 'transparent',
+                color: filters.isOnSaleOnly ? '#f87171' : '#94a3b8',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
               }}
             >
-              SALE
+              🔥 On Sale
             </button>
           </div>
 
-          {/* Right: Refine & Layout Switcher */}
+          {/* Right: Refine & Sort Switcher */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
             {/* Filter Toggle Button */}
             <button
@@ -214,22 +204,20 @@ export const NikeFilterBar: React.FC<{
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
+                gap: '0.45rem',
                 padding: '0.45rem 0.95rem',
-                border: isFilterDrawerOpen || activeFiltersCount > 0 ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.2)',
-                background: isFilterDrawerOpen || activeFiltersCount > 0 ? '#ffffff' : 'transparent',
-                color: isFilterDrawerOpen || activeFiltersCount > 0 ? '#000000' : '#ffffff',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 800,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
+                borderRadius: '8px',
+                border: isFilterDrawerOpen || activeFiltersCount > 0 ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.16)',
+                background: isFilterDrawerOpen || activeFiltersCount > 0 ? '#ffffff' : 'rgba(255,255,255,0.03)',
+                color: isFilterDrawerOpen || activeFiltersCount > 0 ? '#08090d' : '#f1f5f9',
+                fontSize: '0.8rem',
+                fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'var(--transition)',
               }}
             >
-              <SlidersHorizontal size={13} />
-              <span>{isFilterDrawerOpen ? 'CLOSE REFINE' : 'REFINE SPECIFICATIONS'}</span>
+              <SlidersHorizontal size={14} />
+              <span>{isFilterDrawerOpen ? 'Close Filters' : 'Refine Filters'}</span>
               {activeFiltersCount > 0 && <span>({activeFiltersCount})</span>}
             </button>
 
@@ -238,29 +226,30 @@ export const NikeFilterBar: React.FC<{
               value={filters.sortBy}
               onChange={(e) => setFilters((p) => ({ ...p, sortBy: e.target.value as any }))}
               style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                background: '#0d0f15',
+                color: '#f1f5f9',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                borderRadius: '8px',
                 padding: '0.45rem 0.85rem',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '0.8rem',
                 fontWeight: 600,
-                letterSpacing: '0.05em',
                 cursor: 'pointer',
                 outline: 'none',
               }}
             >
-              <option value="featured">SORT: FEATURED</option>
-              <option value="price-asc">PRICE: ASCENDING</option>
-              <option value="price-desc">PRICE: DESCENDING</option>
-              <option value="rating">HIGHEST RATED</option>
+              <option value="featured">Sort: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
             </select>
 
             {/* Grid Switcher */}
             <div
               style={{
                 display: 'flex',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
               }}
               className="desktop-nav"
             >
@@ -269,49 +258,51 @@ export const NikeFilterBar: React.FC<{
                 style={{
                   padding: '0.45rem 0.65rem',
                   border: 'none',
-                  background: gridCols === 3 ? '#ffffff' : 'transparent',
-                  color: gridCols === 3 ? '#000000' : '#71717a',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
+                  background: gridCols === 3 ? '#ffffff' : '#0d0f15',
+                  color: gridCols === 3 ? '#08090d' : '#94a3b8',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
                   cursor: 'pointer',
                 }}
+                title="3 Columns"
               >
-                3-COL
+                3-Col
               </button>
               <button
                 onClick={() => setGridCols(4)}
                 style={{
                   padding: '0.45rem 0.65rem',
                   border: 'none',
-                  background: gridCols === 4 ? '#ffffff' : 'transparent',
-                  color: gridCols === 4 ? '#000000' : '#71717a',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
+                  borderLeft: '1px solid rgba(255,255,255,0.1)',
+                  background: gridCols === 4 ? '#ffffff' : '#0d0f15',
+                  color: gridCols === 4 ? '#08090d' : '#94a3b8',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
                   cursor: 'pointer',
                 }}
+                title="4 Columns"
               >
-                4-COL
+                4-Col
               </button>
             </div>
           </div>
         </div>
 
-        {/* Minimalist Refine Drawer */}
+        {/* Refine Drawer */}
         {isFilterDrawerOpen && (
           <div
             style={{
               marginTop: '1rem',
               padding: '1.5rem',
-              background: '#090909',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
+              background: '#0d0f15',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: '12px',
               animation: 'fadeIn 0.2s ease-out',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 800, color: '#ffffff', letterSpacing: '0.1em' }}>
-                // PARAMETERS [{filteredJerseys.length} MATCHING]
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>
+                Refine by Specifications ({filteredJerseys.length} matching)
               </div>
 
               {activeFiltersCount > 0 && (
@@ -320,19 +311,17 @@ export const NikeFilterBar: React.FC<{
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#ffffff',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
+                    color: '#f87171',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.3rem',
-                    textDecoration: 'underline',
+                    gap: '0.35rem',
                   }}
                 >
                   <RotateCcw size={12} />
-                  <span>RESET PARAMETERS</span>
+                  <span>Reset All Filters</span>
                 </button>
               )}
             </div>
@@ -346,10 +335,10 @@ export const NikeFilterBar: React.FC<{
             >
               {/* Sizes */}
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#71717a', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-                  AVAILABLE SIZES
+                <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                  Filter by Size
                 </label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                   {SIZES.map((sz) => {
                     const sel = filters.sizes.includes(sz);
                     return (
@@ -359,12 +348,12 @@ export const NikeFilterBar: React.FC<{
                         style={{
                           width: '40px',
                           height: '34px',
-                          border: sel ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
-                          background: sel ? '#ffffff' : 'transparent',
-                          color: sel ? '#000000' : '#ffffff',
-                          fontFamily: 'var(--font-mono)',
+                          borderRadius: '6px',
+                          border: sel ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.12)',
+                          background: sel ? '#ffffff' : 'rgba(255,255,255,0.03)',
+                          color: sel ? '#08090d' : '#f1f5f9',
                           fontWeight: 700,
-                          fontSize: '0.75rem',
+                          fontSize: '0.78rem',
                           cursor: 'pointer',
                         }}
                       >
@@ -377,10 +366,10 @@ export const NikeFilterBar: React.FC<{
 
               {/* Featured Players */}
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#71717a', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-                  ATHLETE ROSTER
+                <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                  Athlete Roster
                 </label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', maxHeight: '100px', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', maxHeight: '110px', overflowY: 'auto' }}>
                   {availablePlayers.map((pl) => {
                     const sel = filters.player.includes(pl);
                     return (
@@ -388,12 +377,13 @@ export const NikeFilterBar: React.FC<{
                         key={pl}
                         onClick={() => handlePlayerToggle(pl)}
                         style={{
-                          padding: '0.25rem 0.6rem',
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.72rem',
-                          border: sel ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
-                          background: sel ? '#ffffff' : 'transparent',
-                          color: sel ? '#000000' : '#a1a1aa',
+                          padding: '0.3rem 0.65rem',
+                          borderRadius: '6px',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          border: sel ? '1px solid #ffffff' : '1px solid rgba(255,255,255,0.12)',
+                          background: sel ? '#ffffff' : 'rgba(255,255,255,0.03)',
+                          color: sel ? '#08090d' : '#94a3b8',
                           cursor: 'pointer',
                         }}
                       >
@@ -406,8 +396,8 @@ export const NikeFilterBar: React.FC<{
 
               {/* Price Range */}
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#71717a', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-                  MAX PRICE: NPR {filters.maxPrice.toLocaleString()}
+                <label style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                  Maximum Price: रू {filters.maxPrice.toLocaleString()}
                 </label>
                 <input
                   type="range"
