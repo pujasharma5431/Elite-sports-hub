@@ -118,7 +118,7 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* 6. Brand Perks & Nepal Dispatch Strip */}
+      {/* 6. Brand Perks & Global Dispatch Strip */}
       <section
         style={{
           padding: '3.5rem 0',
@@ -139,11 +139,11 @@ export default function ShopPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Truck size={18} color="#f87171" />
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                  Same-Day Kathmandu Dispatch
+                  Nepal, Dubai, India & Worldwide
                 </h4>
               </div>
               <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
-                Orders placed before 2 PM dispatched same-day in Kathmandu Valley. Rapid courier delivery to all 77 districts of Nepal.
+                Same-day dispatch in Kathmandu Valley, courier across all 77 districts of Nepal, rapid express delivery to Dubai (UAE), India, and worldwide.
               </p>
             </div>
 
@@ -151,11 +151,11 @@ export default function ShopPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <ShieldCheck size={18} color="#10b981" />
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                  Authentic Player Match Grade
+                  Top-Grade Authentic Designs
                 </h4>
               </div>
               <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
-                Breathable AeroVent™ poly-mesh, moisture-wicking technology, and authentic silicone club and national crests.
+                Fan-perfect fit engineered with breathable AeroVent™ poly-mesh, moisture-wicking technology, and authentic tournament club & national crests.
               </p>
             </div>
 
@@ -167,7 +167,7 @@ export default function ShopPage() {
                 </h4>
               </div>
               <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
-                Personalize your kit with official tournament typography, heat-pressed with precision at our Kathmandu studio.
+                Personalize your kit with official tournament typography, player numbers, and custom names heat-pressed with laser precision.
               </p>
             </div>
 
@@ -175,11 +175,11 @@ export default function ShopPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <RotateCcw size={18} color="#60a5fa" />
                 <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff' }}>
-                  Hassle-Free Size Exchange
+                  Prices That Won’t Break Your Budget
                 </h4>
               </div>
               <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
-                7-day easy size exchange guarantee. Secure payments via Cash on Delivery, eSewa, and Khalti across Nepal.
+                Premium pro-grade match kits at fan-friendly prices. 7-day easy size exchange guarantee with Cash on Delivery, eSewa, Khalti, & Cards.
               </p>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function ShopPage() {
           <div
             style={{
               fontFamily: 'var(--font-primary)',
-              fontSize: '1.3rem',
+              fontSize: '1.35rem',
               fontWeight: 800,
               letterSpacing: '-0.02em',
               color: '#ffffff',
@@ -200,18 +200,33 @@ export default function ShopPage() {
           >
             ELITE SPORTS HUB
           </div>
-          <p style={{ maxWidth: '500px', lineHeight: 1.5, fontSize: '0.85rem' }}>
-            Nepal’s premier destination for official cricket, world football, and numbered limited edition collector jerseys.
+          <div
+            style={{
+              fontFamily: 'var(--font-luxury), Georgia, serif',
+              fontSize: '1.05rem',
+              letterSpacing: '0.12em',
+              color: '#e2e8f0',
+              textTransform: 'uppercase',
+            }}
+          >
+            Wear the Victory.
+          </div>
+          <p style={{ maxWidth: '560px', lineHeight: 1.6, fontSize: '0.85rem', color: '#94a3b8' }}>
+            Top-grade football & cricket jerseys delivered across Nepal, Dubai, India, and overall worldwide. Authentic designs, fan-perfect fit, prices that won’t break your budget.
           </p>
 
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center', fontSize: '0.8rem', color: '#cbd5e1' }}>
-            <span>🇳🇵 Kathmandu Valley</span>
+          <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center', fontSize: '0.8rem', color: '#cbd5e1' }}>
+            <span>🇳🇵 Nepal (77 Districts)</span>
+            <span>•</span>
+            <span>🇦🇪 Dubai (UAE)</span>
+            <span>•</span>
+            <span>🇮🇳 India</span>
+            <span>•</span>
+            <span>🌐 Worldwide Shipping</span>
             <span>•</span>
             <span>Cash on Delivery</span>
             <span>•</span>
-            <span>eSewa</span>
-            <span>•</span>
-            <span>Khalti</span>
+            <span>eSewa / Khalti</span>
           </div>
 
           <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>

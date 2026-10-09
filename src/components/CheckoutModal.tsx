@@ -4,27 +4,29 @@ import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { X, CheckCircle2, Truck } from 'lucide-react';
 
-const NEPAL_CITIES = [
-  'Kathmandu',
-  'Lalitpur (Patan)',
-  'Bhaktapur',
-  'Pokhara',
-  'Chitwan (Bharatpur / Narayangarh)',
-  'Biratnagar',
-  'Dharan',
-  'Butwal',
-  'Bhairahawa',
-  'Hetauda',
-  'Nepalgunj',
-  'Other District (All Nepal)',
+const DELIVERY_ZONES = [
+  '🇳🇵 Kathmandu Valley (Same-Day Dispatch)',
+  '🇳🇵 Lalitpur (Patan)',
+  '🇳🇵 Bhaktapur',
+  '🇳🇵 Pokhara',
+  '🇳🇵 Chitwan (Bharatpur / Narayangarh)',
+  '🇳🇵 Biratnagar',
+  '🇳🇵 Dharan',
+  '🇳🇵 Butwal / Bhairahawa',
+  '🇳🇵 Nepalgunj',
+  '🇳🇵 All Other 77 Districts (Nepal)',
+  '🇦🇪 Dubai & UAE (Express Air Dispatch)',
+  '🇮🇳 India (Delhi, Mumbai & All India)',
+  '🌐 Worldwide / International Express',
 ];
+
 
 export const CheckoutModal: React.FC = () => {
   const { isCheckoutOpen, setIsCheckoutOpen, cart, cartTotal, clearCart } = useStore();
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [city, setCity] = useState(NEPAL_CITIES[0]);
+  const [city, setCity] = useState(DELIVERY_ZONES[0]);
   const [address, setAddress] = useState('');
   const [landmark, setLandmark] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'esewa' | 'khalti' | 'fonepay'>('cod');
@@ -132,7 +134,7 @@ export const CheckoutModal: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                 <div>
                   <label style={{ display: 'block', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#71717a', letterSpacing: '0.08em', marginBottom: '0.35rem' }}>
-                    DELIVERY ZONE (NEPAL) *
+                    DESTINATION (NEPAL / DUBAI / INDIA / WORLDWIDE) *
                   </label>
                   <select
                     className="form-input"
@@ -140,7 +142,7 @@ export const CheckoutModal: React.FC = () => {
                     onChange={(e) => setCity(e.target.value)}
                     style={{ cursor: 'pointer', fontFamily: 'var(--font-mono)' }}
                   >
-                    {NEPAL_CITIES.map((c) => (
+                    {DELIVERY_ZONES.map((c) => (
                       <option key={c} value={c} style={{ background: '#000000', color: '#ffffff' }}>
                         {c}
                       </option>

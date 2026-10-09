@@ -1,14 +1,14 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Zap, CheckCircle2 } from 'lucide-react';
+import { MapPin, Zap, Globe, Truck } from 'lucide-react';
 
 export const NepalDeliveryBanner: React.FC = () => {
   return (
     <div
       id="nepal-delivery-banner"
       style={{
-        background: '#06070a',
+        background: '#040507',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         fontSize: '0.74rem',
         padding: '0.45rem 1rem',
@@ -29,28 +29,33 @@ export const NepalDeliveryBanner: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <span style={{ color: '#ffffff', fontWeight: 700, letterSpacing: '0.02em' }}>
+          <span style={{ color: '#ffffff', fontWeight: 800, letterSpacing: '0.04em' }}>
             ELITE SPORTS HUB
           </span>
           <span style={{ color: '#334155' }}>/</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: '#cbd5e1' }}>
-            <MapPin size={12} color="#f87171" /> Kathmandu, Nepal
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: '#e2e8f0', fontWeight: 600 }}>
+            <span>Premium Jersey Store — Nepal</span>
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontSize: '0.73rem' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Zap size={12} color="#fbbf24" />
-            <span>Same-Day Dispatch in Kathmandu Valley</span>
+        {/* Global Delivery Destinations */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap', fontSize: '0.73rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#fbbf24', fontWeight: 700 }}>
+            <Truck size={12} color="#fbbf24" />
+            <span>Delivery:</span>
           </span>
+          <span style={{ color: '#f1f5f9' }}>🇳🇵 All Over Nepal (77 Districts)</span>
           <span style={{ color: '#334155' }}>•</span>
-          <span>Courier Delivery to all 77 Districts</span>
+          <span style={{ color: '#f1f5f9' }}>🇦🇪 Dubai (UAE)</span>
           <span style={{ color: '#334155' }}>•</span>
-          <span style={{ color: '#f1f5f9', fontWeight: 600 }}>
-            Cash on Delivery • eSewa • Khalti
-          </span>
+          <span style={{ color: '#f1f5f9' }}>🇮🇳 India</span>
+          <span style={{ color: '#334155' }}>•</span>
+          <span style={{ color: '#38bdf8', fontWeight: 700 }}>🌐 Worldwide Shipping</span>
+          <span style={{ color: '#334155' }}>|</span>
+          <span style={{ color: '#cbd5e1' }}>COD • eSewa • Khalti • Cards</span>
         </div>
       </div>
     </div>
   );
 };
+
