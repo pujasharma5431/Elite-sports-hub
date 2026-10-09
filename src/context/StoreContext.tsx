@@ -106,7 +106,22 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
 
       const storedJerseys = localStorage.getItem(LOCAL_STORAGE_KEY_JERSEYS);
       if (storedJerseys) {
-        setJerseys(JSON.parse(storedJerseys));
+        const parsed: Jersey[] = JSON.parse(storedJerseys);
+        const merged = parsed.map((item) => {
+          const init = INITIAL_JERSEYS.find((i) => i.id === item.id);
+          if (init) {
+            return {
+              ...init,
+              ...item,
+              quality: item.quality || init.quality,
+              description: item.description || init.description,
+              isHeadlineDrop: item.isHeadlineDrop !== undefined ? item.isHeadlineDrop : init.isHeadlineDrop,
+              isCustomizable: item.isCustomizable !== undefined ? item.isCustomizable : init.isCustomizable,
+            };
+          }
+          return item;
+        });
+        setJerseys(merged);
       }
 
       const storedCart = localStorage.getItem(LOCAL_STORAGE_KEY_CART);

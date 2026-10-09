@@ -36,8 +36,11 @@ export interface Jersey {
   rating: number;
   reviewsCount: number;
   fabric: string;
+  quality?: string; // Quality specifications added by admin
   description: string;
   nepalSpecial?: boolean;
+  isHeadlineDrop?: boolean; // Admin sets whether featured in Headline Match Drops
+  isCustomizable?: boolean; // Admin sets whether customizable with custom name/number
 }
 
 export interface FilterState {

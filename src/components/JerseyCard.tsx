@@ -357,7 +357,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({ jersey }) => {
               transition: 'var(--transition)',
             }}
           >
-            <span>Customize</span>
+            <span>{jersey.isCustomizable !== false ? 'Customize' : 'View Details'}</span>
             <ArrowUpRight size={13} />
           </button>
         </div>

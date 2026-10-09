@@ -8,9 +8,12 @@ import { ArrowUpRight, Flame } from 'lucide-react';
 export const TrendingDropsCarousel: React.FC = () => {
   const { jerseys, setQuickViewJersey } = useStore();
 
-  const trending = jerseys.filter(
-    (j) => j.isLimitedEdition || j.nepalSpecial || j.player.includes('Messi') || j.player.includes('Kohli')
-  ).slice(0, 4);
+  // Admin-curated Headline Match Drops
+  const headlineItems = jerseys.filter((j) => j.isHeadlineDrop === true);
+  const trending = headlineItems.length > 0
+    ? headlineItems
+    : jerseys.filter((j) => j.isLimitedEdition || j.nepalSpecial || j.player.includes('Messi')).slice(0, 4);
+
 
   return (
     <section
