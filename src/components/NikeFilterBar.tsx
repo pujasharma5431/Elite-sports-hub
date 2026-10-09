@@ -8,9 +8,9 @@ import { SlidersHorizontal, RotateCcw, LayoutGrid, Grid3X3 } from 'lucide-react'
 const SIZES: JerseySize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
 
 export const NikeFilterBar: React.FC<{
-  gridCols: 3 | 4;
-  setGridCols: (cols: 3 | 4) => void;
-}> = ({ gridCols, setGridCols }) => {
+  gridCols?: 3 | 4;
+  setGridCols?: (cols: 3 | 4) => void;
+}> = () => {
   const { filters, setFilters, resetFilters, filteredJerseys, availablePlayers } = useStore();
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
@@ -242,49 +242,6 @@ export const NikeFilterBar: React.FC<{
               <option value="price-desc">Price: High to Low</option>
               <option value="rating">Highest Rated</option>
             </select>
-
-            {/* Grid Switcher */}
-            <div
-              style={{
-                display: 'flex',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.16)',
-              }}
-              className="desktop-nav"
-            >
-              <button
-                onClick={() => setGridCols(3)}
-                style={{
-                  padding: '0.45rem 0.65rem',
-                  border: 'none',
-                  background: gridCols === 3 ? '#ffffff' : '#0d0f15',
-                  color: gridCols === 3 ? '#08090d' : '#94a3b8',
-                  fontSize: '0.78rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-                title="3 Columns"
-              >
-                3-Col
-              </button>
-              <button
-                onClick={() => setGridCols(4)}
-                style={{
-                  padding: '0.45rem 0.65rem',
-                  border: 'none',
-                  borderLeft: '1px solid rgba(255,255,255,0.1)',
-                  background: gridCols === 4 ? '#ffffff' : '#0d0f15',
-                  color: gridCols === 4 ? '#08090d' : '#94a3b8',
-                  fontSize: '0.78rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-                title="4 Columns"
-              >
-                4-Col
-              </button>
-            </div>
           </div>
         </div>
 

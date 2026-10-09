@@ -133,8 +133,8 @@ export const CartDrawer: React.FC = () => {
             justifyContent: 'space-between',
           }}
         >
-          <span>EXPRESS KATHMANDU VAULT DISPATCH</span>
-          <span style={{ color: '#ffffff' }}>77 DISTRICTS • DUBAI • INDIA</span>
+          <span>EXPRESS DISPATCH</span>
+          <span style={{ color: '#ffffff' }}>NEPAL • DUBAI • INDIA</span>
         </div>
 
         {/* Items List */}
@@ -283,9 +283,9 @@ export const CartDrawer: React.FC = () => {
             {/* Delivery destination */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.35rem' }}>
               {[
-                { id: 'ktm', label: 'KTM VALLEY', fee: 'NPR 100' },
-                { id: 'outside', label: 'MAJOR CITIES', fee: 'NPR 150' },
-                { id: 'remote', label: 'OTHER DISTRICTS', fee: 'NPR 200' },
+                { id: 'ktm', label: 'KATHMANDU', fee: 'NPR 100' },
+                { id: 'outside', label: 'OTHER CITIES', fee: 'NPR 150' },
+                { id: 'remote', label: 'REGIONAL', fee: 'NPR 200' },
               ].map((z) => (
                 <button
                   key={z.id}

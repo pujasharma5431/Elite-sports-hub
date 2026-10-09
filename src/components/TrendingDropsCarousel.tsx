@@ -55,7 +55,7 @@ export const TrendingDropsCarousel: React.FC = () => {
               }}
             >
               <Flame size={13} />
-              <span>Curated Releases • Kathmandu Vault</span>
+              <span>Curated Match Drops</span>
             </div>
             <h3
               style={{

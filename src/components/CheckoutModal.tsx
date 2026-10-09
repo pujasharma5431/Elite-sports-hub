@@ -292,7 +292,7 @@ Please confirm my order and dispatch schedule!`;
                     }}
                   >
                     <option value="Nepal" style={{ background: '#000000', color: '#ffffff' }}>
-                      🇳🇵 Nepal (77 Districts)
+                      🇳🇵 Nepal
                     </option>
                     <option value="Dubai" style={{ background: '#000000', color: '#ffffff' }}>
                       🇦🇪 Dubai (UAE)
@@ -442,7 +442,7 @@ Please confirm my order and dispatch schedule!`;
                         ? '(KTM Valley Same-Day)'
                         : deliveryFee === 150
                         ? '(Major City Courier)'
-                        : '(District Courier)'
+                        : '(Courier Delivery)'
                       : `(${location} Air Shipping)`}
                   </span>
                 </div>

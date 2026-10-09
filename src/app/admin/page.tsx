@@ -29,6 +29,8 @@ import {
   EyeOff,
   Trash2,
   LogOut,
+  Copy,
+  Save,
 } from 'lucide-react';
 
 const ALL_SIZES: JerseySize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
@@ -52,6 +54,7 @@ export default function AdminPage() {
     updateJerseyInventory,
     addNewJersey,
     deleteJersey,
+    duplicateJersey,
     toggleJerseyVisibility,
     resetAllJerseys,
     orders,
@@ -1135,6 +1138,36 @@ export default function AdminPage() {
                         <span>{jersey.isVisible !== false ? 'STORE: LIVE / VISIBLE' : 'STORE: HIDDEN (DRAFT)'}</span>
                       </button>
 
+                      {/* Duplicate Product */}
+                      <button
+                        onClick={() => {
+                          const dup = duplicateJersey(jersey.id);
+                          if (dup) {
+                            setExpandedJerseyId(dup.id);
+                            showNotification(`📋 Duplicated "${jersey.title}"! You can now edit its details or photo below.`);
+                          }
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          padding: '0.55rem 0.75rem',
+                          background: 'rgba(59, 130, 246, 0.1)',
+                          border: '1px solid rgba(59, 130, 246, 0.35)',
+                          color: '#60a5fa',
+                          fontSize: '0.72rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          fontFamily: 'var(--font-mono)',
+                          textTransform: 'uppercase',
+                        }}
+                        title="Duplicate this product so you can easily modify text or photo"
+                      >
+                        <Copy size={13} />
+                        <span>DUPLICATE</span>
+                      </button>
+
                       {/* Delete Product */}
                       <button
                         onClick={() => {
@@ -1248,13 +1281,102 @@ export default function AdminPage() {
                       <div
                         style={{
                           background: '#020305',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          padding: '1rem',
+                          border: '1px solid rgba(255, 255, 255, 0.25)',
+                          padding: '1.25rem',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '0.75rem',
+                          gap: '1rem',
+                          borderRadius: '6px',
                         }}
                       >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '0.65rem' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                            Edit Specs & Product Details: {jersey.title}
+                          </span>
+                          <span style={{ fontSize: '0.7rem', color: '#71717a', fontFamily: 'var(--font-mono)' }}>
+                            ID: {jersey.id}
+                          </span>
+                        </div>
+
+                        {/* Title & Player row */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '0.75rem' }}>
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.25rem' }}>
+                              Product Title:
+                            </label>
+                            <input
+                              type="text"
+                              value={jersey.title}
+                              onChange={(e) => updateJerseyInventory(jersey.id, { title: e.target.value })}
+                              className="form-input"
+                              style={{ fontSize: '0.82rem', height: '38px' }}
+                            />
+                          </div>
+
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.25rem' }}>
+                              Team / Club:
+                            </label>
+                            <input
+                              type="text"
+                              value={jersey.team}
+                              onChange={(e) => updateJerseyInventory(jersey.id, { team: e.target.value })}
+                              className="form-input"
+                              style={{ fontSize: '0.82rem', height: '38px' }}
+                            />
+                          </div>
+
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.25rem' }}>
+                              Player & Number:
+                            </label>
+                            <input
+                              type="text"
+                              value={`${jersey.player || ''} ${jersey.playerNumber ? `#${jersey.playerNumber}` : ''}`}
+                              onChange={(e) => updateJerseyInventory(jersey.id, { player: e.target.value })}
+                              className="form-input"
+                              style={{ fontSize: '0.82rem', height: '38px' }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Sizes Pill Selector */}
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.35rem' }}>
+                            Available Sizes:
+                          </label>
+                          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                            {ALL_SIZES.map((sz) => {
+                              const active = jersey.sizes.includes(sz);
+                              return (
+                                <button
+                                  key={sz}
+                                  type="button"
+                                  onClick={() => {
+                                    const nextSizes = active
+                                      ? jersey.sizes.filter((s) => s !== sz)
+                                      : [...jersey.sizes, sz];
+                                    updateJerseyInventory(jersey.id, { sizes: nextSizes });
+                                  }}
+                                  style={{
+                                    padding: '0.3rem 0.6rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    fontSize: '0.72rem',
+                                    fontWeight: 700,
+                                    border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                                    background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                                    color: active ? '#000000' : '#a1a1aa',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  {sz}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Quality Specs */}
                         <div>
                           <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.3rem' }}>
                             <ShieldCheck size={13} color="#22c55e" />
@@ -1265,17 +1387,12 @@ export default function AdminPage() {
                             value={jersey.quality || jersey.fabric || ''}
                             onChange={(e) => updateJerseyInventory(jersey.id, { quality: e.target.value, fabric: e.target.value })}
                             placeholder="e.g. 100% Pro Player Match Specification // AeroVent™ Poly-Mesh with silicone crest"
-                            style={{
-                              width: '100%',
-                              padding: '0.5rem 0.65rem',
-                              background: '#000000',
-                              border: '1px solid rgba(255, 255, 255, 0.2)',
-                              color: '#ffffff',
-                              fontSize: '0.8rem',
-                            }}
+                            className="form-input"
+                            style={{ fontSize: '0.82rem', height: '38px' }}
                           />
                         </div>
 
+                        {/* Description */}
                         <div>
                           <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.68rem', color: '#a1a1aa', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '0.3rem' }}>
                             <FileText size={13} />
@@ -1286,16 +1403,8 @@ export default function AdminPage() {
                             value={jersey.description || ''}
                             onChange={(e) => updateJerseyInventory(jersey.id, { description: e.target.value })}
                             placeholder="Detailed description of the jersey, heritage, stitching, and match history..."
-                            style={{
-                              width: '100%',
-                              padding: '0.5rem 0.65rem',
-                              background: '#000000',
-                              border: '1px solid rgba(255, 255, 255, 0.2)',
-                              color: '#ffffff',
-                              fontSize: '0.8rem',
-                              resize: 'vertical',
-                              lineHeight: 1.45,
-                            }}
+                            className="form-input"
+                            style={{ fontSize: '0.82rem', resize: 'vertical' }}
                           />
                         </div>
 
@@ -1307,8 +1416,48 @@ export default function AdminPage() {
                               updateJerseyInventory(jersey.id, { image: newWebp });
                               showNotification(`✅ Photo for "${jersey.title}" updated and compressed to WebP!`);
                             }}
-                            label="REPLACE PRODUCT PHOTO (AUTO COMPRESSED TO WEBP)"
+                            label="PRODUCT PHOTO (DRAG & DROP OR BROWSE — AUTO WEBP COMPRESSED)"
                           />
+                        </div>
+
+                        {/* Save & Update Action Bar */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedJerseyId(null)}
+                            style={{
+                              padding: '0.55rem 1.15rem',
+                              background: 'transparent',
+                              border: '1px solid rgba(255, 255, 255, 0.2)',
+                              color: '#a1a1aa',
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            CLOSE
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setExpandedJerseyId(null);
+                              showNotification(`✅ Changes for "${jersey.title}" saved successfully!`);
+                            }}
+                            className="btn btn-primary"
+                            style={{
+                              padding: '0.55rem 1.5rem',
+                              fontSize: '0.78rem',
+                              fontWeight: 800,
+                              letterSpacing: '0.06em',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.45rem',
+                            }}
+                          >
+                            <Save size={15} />
+                            <span>SAVE & UPDATE PRODUCT</span>
+                          </button>
                         </div>
                       </div>
                     )}
@@ -1322,294 +1471,489 @@ export default function AdminPage() {
 
         {/* TAB 3: ADD NEW MATCH DROP */}
         {activeTab === 'add' && (
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.35rem', fontWeight: 800, textTransform: 'uppercase', margin: 0 }}>
-                Add New Match Drop to Store
-              </h2>
-              <p style={{ fontSize: '0.78rem', color: '#71717a', margin: '0.2rem 0 0 0', fontFamily: 'var(--font-mono)' }}>
-                Publish a new official jersey with custom print permissions, headline reel priority, and quality specifications.
-              </p>
+          <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, textTransform: 'uppercase', margin: 0, letterSpacing: '0.04em' }}>
+                  Add New Product
+                </h2>
+                <p style={{ fontSize: '0.78rem', color: '#71717a', margin: '0.25rem 0 0 0', fontFamily: 'var(--font-mono)' }}>
+                  Create and publish a new official jersey drop with specifications, photo, and sizing.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveTab('catalog')}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  color: '#e4e4e7',
+                  padding: '0.45rem 0.85rem',
+                  fontSize: '0.75rem',
+                  fontFamily: 'var(--font-mono)',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
+                }}
+              >
+                ← Back to Catalog
+              </button>
             </div>
 
-            <form onSubmit={handleCreateJersey} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    JERSEY TITLE *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Nepal T20 World Cup Special Edition Jersey"
-                    className="form-input"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                  />
+            <form onSubmit={handleCreateJersey} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+              {/* CARD 1: PRODUCT IDENTITY */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <span style={{ fontSize: '0.9rem' }}>🏷️</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    1. Product Identity & Team
+                  </span>
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    CATEGORY
-                  </label>
-                  <select
-                    className="form-input"
-                    value={newCategory}
-                    onChange={(e) => {
-                      const val = e.target.value as any;
-                      setNewCategory(val);
-                      if (val === 'cricket') setNewSport('Cricket');
-                      if (val === 'football') setNewSport('Football');
-                    }}
-                  >
-                    <option value="cricket">Cricket</option>
-                    <option value="football">Football</option>
-                    <option value="limited-edition">Limited Edition</option>
-                  </select>
-                </div>
-              </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '0.85rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      PRODUCT / JERSEY TITLE *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Argentina 3-Star World Cup Champions Edition"
+                      className="form-input"
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                    />
+                  </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    TEAM / CLUB *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="form-input"
-                    value={newTeam}
-                    onChange={(e) => setNewTeam(e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    FEATURED PLAYER
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Rohit Paudel, Messi..."
-                    className="form-input"
-                    value={newPlayer}
-                    onChange={(e) => setNewPlayer(e.target.value)}
-                  />
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      CATEGORY *
+                    </label>
+                    <select
+                      className="form-input"
+                      value={newCategory}
+                      onChange={(e) => {
+                        const val = e.target.value as any;
+                        setNewCategory(val);
+                        if (val === 'cricket') setNewSport('Cricket');
+                        if (val === 'football') setNewSport('Football');
+                      }}
+                    >
+                      <option value="football">Football</option>
+                      <option value="cricket">Cricket</option>
+                      <option value="limited-edition">Limited Edition</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    PLAYER NUMBER
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="e.g. 17"
-                    className="form-input"
-                    value={newPlayerNumber}
-                    onChange={(e) => setNewPlayerNumber(e.target.value)}
-                  />
-                </div>
-              </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      TEAM / CLUB / NATION *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Argentina / Real Madrid"
+                      className="form-input"
+                      value={newTeam}
+                      onChange={(e) => setNewTeam(e.target.value)}
+                    />
+                  </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    PRICE (NPR) *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="3200"
-                    className="form-input"
-                    value={newPrice}
-                    onChange={(e) => setNewPrice(e.target.value)}
-                  />
-                </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      FEATURED PLAYER (OPTIONAL)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Lionel Messi"
+                      className="form-input"
+                      value={newPlayer}
+                      onChange={(e) => setNewPlayer(e.target.value)}
+                    />
+                  </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    ORIGINAL PRICE (IF SALE)
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="e.g. 3800"
-                    className="form-input"
-                    value={newOriginalPrice}
-                    onChange={(e) => setNewOriginalPrice(e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                    INITIAL STOCK COUNT *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    className="form-input"
-                    value={newStock}
-                    onChange={(e) => setNewStock(e.target.value)}
-                  />
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      SQUAD NUMBER (OPTIONAL)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 10"
+                      className="form-input"
+                      value={newPlayerNumber}
+                      onChange={(e) => setNewPlayerNumber(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Quality Specification */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                  QUALITY & MATERIAL SPECIFICATIONS (DISPLAYED TO CUSTOMER ON CLICK)
-                </label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. 100% Pro Player Match Specification // AeroVent™ Poly-Mesh with silicone crest"
-                  value={newQuality}
-                  onChange={(e) => setNewQuality(e.target.value)}
-                />
+              {/* CARD 2: PRICING & INVENTORY */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <span style={{ fontSize: '0.9rem' }}>💰</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    2. Pricing & Inventory Stock
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      SELLING PRICE (NPR) *
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 3200"
+                      className="form-input"
+                      value={newPrice}
+                      onChange={(e) => setNewPrice(e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      ORIGINAL PRICE (FOR STRIKETHROUGH)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 3800"
+                      className="form-input"
+                      value={newOriginalPrice}
+                      onChange={(e) => setNewOriginalPrice(e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                      STOCK QUANTITY IN HAND *
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 25"
+                      className="form-input"
+                      value={newStock}
+                      onChange={(e) => setNewStock(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Product Details Description */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.3rem', fontFamily: 'var(--font-mono)' }}>
-                  ITEM DETAILS DESCRIPTION (DISPLAYED TO CUSTOMER ON CLICK)
-                </label>
-                <textarea
-                  rows={3}
-                  className="form-input"
-                  placeholder="Detailed description of the jersey, heritage, stitching, and match history..."
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  style={{ resize: 'vertical' }}
-                />
-              </div>
+              {/* CARD 3: PRODUCT PHOTO WITH WEBP AUTO-COMPRESSION */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <span style={{ fontSize: '0.9rem' }}>📸</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    3. Product Photo (Auto Compressed to WebP)
+                  </span>
+                </div>
 
-              {/* Product Image with Auto WebP Compression */}
-              <div>
                 <AdminImageUploader
                   value={newImageUrl}
                   onChange={setNewImageUrl}
-                  label="JERSEY PRODUCT IMAGE (DRAG & DROP OR BROWSE — AUTO REDUCED & WEBP COMPRESSED)"
+                  label="UPLOAD JERSEY PHOTO (DRAG & DROP OR CHOOSE FILE)"
                 />
               </div>
 
-              {/* Sizing Matrix Selection */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
-                  AVAILABLE SIZES
-                </label>
-                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                  {ALL_SIZES.map((sz) => {
-                    const active = newSizes.includes(sz);
-                    return (
-                      <button
-                        key={sz}
-                        type="button"
-                        onClick={() => {
-                          setNewSizes(
-                            active ? newSizes.filter((s) => s !== sz) : [...newSizes, sz]
-                          );
-                        }}
-                        style={{
-                          padding: '0.35rem 0.65rem',
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
-                          background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
-                          color: active ? '#000000' : '#a1a1aa',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {sz}
-                      </button>
-                    );
-                  })}
+              {/* CARD 4: SIZES & FIT MATRIX */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <span style={{ fontSize: '0.9rem' }}>📐</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    4. Available Sizes & Fit Specifications
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.45rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                    AVAILABLE SIZES (CLICK TO TOGGLE):
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {ALL_SIZES.map((sz) => {
+                      const active = newSizes.includes(sz);
+                      return (
+                        <button
+                          key={sz}
+                          type="button"
+                          onClick={() => {
+                            setNewSizes(
+                              active ? newSizes.filter((s) => s !== sz) : [...newSizes, sz]
+                            );
+                          }}
+                          style={{
+                            padding: '0.4rem 0.85rem',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.78rem',
+                            fontWeight: 700,
+                            borderRadius: '4px',
+                            border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                            background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                            color: active ? '#000000' : '#a1a1aa',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          {active ? `✓ ${sz}` : sz}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.45rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                    FIT SPECIFICATIONS (CLICK TO TOGGLE):
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {ALL_GENDERS.map((g) => {
+                      const active = newGenders.includes(g.id);
+                      return (
+                        <button
+                          key={g.id}
+                          type="button"
+                          onClick={() => {
+                            setNewGenders(
+                              active ? newGenders.filter((x) => x !== g.id) : [...newGenders, g.id]
+                            );
+                          }}
+                          style={{
+                            padding: '0.4rem 0.85rem',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.78rem',
+                            fontWeight: 700,
+                            borderRadius: '4px',
+                            border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
+                            background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                            color: active ? '#000000' : '#a1a1aa',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          {active ? `✓ ${g.label}` : g.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
-              {/* Fit Selection */}
-              <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
-                  FIT SPECIFICATION
-                </label>
-                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                  {ALL_GENDERS.map((g) => {
-                    const active = newGenders.includes(g.id);
-                    return (
-                      <button
-                        key={g.id}
-                        type="button"
-                        onClick={() => {
-                          setNewGenders(
-                            active ? newGenders.filter((x) => x !== g.id) : [...newGenders, g.id]
-                          );
-                        }}
-                        style={{
-                          padding: '0.35rem 0.65rem',
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          border: active ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.15)',
-                          background: active ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
-                          color: active ? '#000000' : '#a1a1aa',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {g.label}
-                      </button>
-                    );
-                  })}
+              {/* CARD 5: QUALITY SPECS & DESCRIPTION */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <ShieldCheck size={16} color="#22c55e" />
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    5. Quality Specifications & Details (Shown to Customer on Click)
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                    QUALITY & MATERIAL SPECIFICATION:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. 100% Pro Player Match Specification // AeroVent™ Poly-Mesh with silicone crest"
+                    value={newQuality}
+                    onChange={(e) => setNewQuality(e.target.value)}
+                  />
+                  <div style={{ fontSize: '0.68rem', color: '#71717a', marginTop: '0.3rem', fontFamily: 'var(--font-mono)' }}>
+                    Shown directly inside the customer modal under &quot;Quality &amp; Specifications&quot;.
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                    DETAILED ITEM DESCRIPTION:
+                  </label>
+                  <textarea
+                    rows={3}
+                    className="form-input"
+                    placeholder="Official player edition jersey featuring breathable performance knit, heat-applied crest, and authentic tournament sleeve details..."
+                    value={newDescription}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                    style={{ resize: 'vertical' }}
+                  />
                 </div>
               </div>
 
-              {/* Flags */}
-              <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', padding: '0.5rem 0' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#ffffff', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
-                  <input
-                    type="checkbox"
-                    checked={newIsHeadlineDrop}
-                    onChange={(e) => setNewIsHeadlineDrop(e.target.checked)}
-                    style={{ accentColor: '#ffffff' }}
-                  />
-                  <span>⭐ Feature in Headline Match Drops Reel</span>
-                </label>
+              {/* CARD 6: STOREFRONT VISIBILITY & BADGES */}
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1.25rem',
+                borderRadius: '6px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.85rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.6rem' }}>
+                  <span style={{ fontSize: '0.9rem' }}>⚙️</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    6. Storefront Visibility & Badges
+                  </span>
+                </div>
 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#ffffff', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
-                  <input
-                    type="checkbox"
-                    checked={newIsCustomizable}
-                    onChange={(e) => setNewIsCustomizable(e.target.checked)}
-                    style={{ accentColor: '#ffffff' }}
-                  />
-                  <span>Allow Custom Name & Number Printing</span>
-                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    fontSize: '0.8rem',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    background: newIsVisible ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                    border: newIsVisible ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '4px',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={newIsVisible}
+                      onChange={(e) => setNewIsVisible(e.target.checked)}
+                      style={{ accentColor: '#10b981', transform: 'scale(1.15)' }}
+                    />
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.78rem' }}>🟢 Visible Immediately</div>
+                      <div style={{ fontSize: '0.68rem', color: '#a1a1aa' }}>Uncheck to save as hidden draft</div>
+                    </div>
+                  </label>
 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#ffffff', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
-                  <input
-                    type="checkbox"
-                    checked={newIsOnSale}
-                    onChange={(e) => setNewIsOnSale(e.target.checked)}
-                    style={{ accentColor: '#ffffff' }}
-                  />
-                  <span>Flash Sale Drop</span>
-                </label>
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    fontSize: '0.8rem',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    background: newIsHeadlineDrop ? 'rgba(245, 158, 11, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                    border: newIsHeadlineDrop ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '4px',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={newIsHeadlineDrop}
+                      onChange={(e) => setNewIsHeadlineDrop(e.target.checked)}
+                      style={{ accentColor: '#f59e0b', transform: 'scale(1.15)' }}
+                    />
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.78rem' }}>⭐ Headline Reel Drop</div>
+                      <div style={{ fontSize: '0.68rem', color: '#a1a1aa' }}>Featured in top carousel</div>
+                    </div>
+                  </label>
 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#ffffff', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
-                  <input
-                    type="checkbox"
-                    checked={newIsVisible}
-                    onChange={(e) => setNewIsVisible(e.target.checked)}
-                    style={{ accentColor: '#10b981' }}
-                  />
-                  <span>🟢 Visible to Customers Immediately (Uncheck to Save as Hidden Draft)</span>
-                </label>
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    fontSize: '0.8rem',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    background: newIsCustomizable ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                    border: newIsCustomizable ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '4px',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={newIsCustomizable}
+                      onChange={(e) => setNewIsCustomizable(e.target.checked)}
+                      style={{ accentColor: '#3b82f6', transform: 'scale(1.15)' }}
+                    />
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.78rem' }}>✍️ Custom Print Option</div>
+                      <div style={{ fontSize: '0.68rem', color: '#a1a1aa' }}>Allow custom name &amp; number</div>
+                    </div>
+                  </label>
+
+                  <label style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    fontSize: '0.8rem',
+                    color: '#ffffff',
+                    cursor: 'pointer',
+                    background: newIsOnSale ? 'rgba(239, 68, 68, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                    border: newIsOnSale ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    padding: '0.65rem 0.85rem',
+                    borderRadius: '4px',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={newIsOnSale}
+                      onChange={(e) => setNewIsOnSale(e.target.checked)}
+                      style={{ accentColor: '#ef4444', transform: 'scale(1.15)' }}
+                    />
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.78rem' }}>🔥 Flash Sale Badge</div>
+                      <div style={{ fontSize: '0.68rem', color: '#a1a1aa' }}>Display RED sale tag on card</div>
+                    </div>
+                  </label>
+                </div>
               </div>
 
+              {/* PUBLISH SUBMIT BUTTON */}
               <button
                 type="submit"
                 className="btn btn-primary"
-                style={{ height: '48px', fontWeight: 800, marginTop: '0.5rem', letterSpacing: '0.06em' }}
+                style={{
+                  height: '52px',
+                  fontWeight: 800,
+                  fontSize: '0.88rem',
+                  letterSpacing: '0.08em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.6rem',
+                  boxShadow: '0 8px 24px rgba(255, 255, 255, 0.12)',
+                }}
               >
-                <PlusCircle size={18} />
-                <span>PUBLISH JERSEY DROP TO CATALOG</span>
+                <PlusCircle size={20} />
+                <span>PUBLISH NEW PRODUCT TO CATALOG</span>
               </button>
             </form>
           </div>

@@ -340,7 +340,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            <span>🇳🇵 Nepal (77 Districts)</span>
+            <span>🇳🇵 Nepal</span>
             <span>•</span>
             <span>🇦🇪 Dubai (UAE)</span>
             <span>•</span>

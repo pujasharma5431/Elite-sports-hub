@@ -44,6 +44,7 @@ interface StoreContextType {
   updateJerseyInventory: (id: string, updates: Partial<Jersey>) => void;
   addNewJersey: (jersey: Omit<Jersey, 'id'>) => void;
   deleteJersey: (id: string) => void;
+  duplicateJersey: (id: string) => Jersey | undefined;
   toggleJerseyVisibility: (id: string) => void;
   resetAllJerseys: () => void;
   // Sanity
@@ -75,7 +76,7 @@ const defaultFilters: FilterState = {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY_JERSEYS = 'elitesportshub_jerseys_v2';
+const LOCAL_STORAGE_KEY_JERSEYS = 'elitesportshub_jerseys_v3';
 const LOCAL_STORAGE_KEY_CART = 'elitesportshub_cart_v1';
 const LOCAL_STORAGE_KEY_WISHLIST = 'elitesportshub_wishlist_v1';
 const LOCAL_STORAGE_KEY_SANITY = 'elitesportshub_sanity_v1';
@@ -331,6 +332,23 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     setJerseys((prev) => [newJersey, ...prev]);
   };
 
+  const duplicateJersey = (id: string) => {
+    const source = jerseys.find((j) => j.id === id);
+    if (!source) return undefined;
+    const newId = `jersey-copy-${Date.now()}`;
+    const duplicated: Jersey = {
+      ...source,
+      id: newId,
+      title: `${source.title} (Copy)`,
+      slug: `${source.slug}-copy-${Date.now().toString().slice(-4)}`,
+      stock: source.stock || 15,
+      rating: 5.0,
+      reviewsCount: 1,
+    };
+    setJerseys((prev) => [duplicated, ...prev]);
+    return duplicated;
+  };
+
   const deleteJersey = (id: string) => {
     setJerseys((prev) => prev.filter((j) => j.id !== id));
     setCart((prev) => prev.filter((c) => c.jerseyId !== id));
@@ -504,6 +522,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         updateJerseyInventory,
         addNewJersey,
         deleteJersey,
+        duplicateJersey,
         toggleJerseyVisibility,
         resetAllJerseys,
         sanityConfig,

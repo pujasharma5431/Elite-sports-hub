@@ -6,7 +6,6 @@ import { ChevronLeft, ChevronRight, ArrowDown, Sparkles } from 'lucide-react';
 
 interface LuxuryCampaignSlide {
   id: string;
-  tabLabel: string;
   editionTag: string;
   kitName: string;
   image: string;
@@ -15,21 +14,18 @@ interface LuxuryCampaignSlide {
 const CAMPAIGN_SLIDES: LuxuryCampaignSlide[] = [
   {
     id: 'campaign-jersey-focus',
-    tabLabel: '01. JERSEY FOCUS',
     editionTag: 'PRO-GRADE ATHLETIC ISSUE',
     kitName: 'Official Match Kit • White & Gold Edition',
     image: '/campaigns/hero-standing-clean.jpg',
   },
   {
     id: 'campaign-football-action',
-    tabLabel: '02. FOOTBALL PITCH',
     editionTag: 'MATCHDAY IN MOTION',
     kitName: 'Pro Stadium Issue • Match Tested',
     image: '/campaigns/hero-football-action.jpg',
   },
   {
     id: 'campaign-cricket-action',
-    tabLabel: '03. CRICKET GROUND',
     editionTag: 'STADIUM TOURNAMENT PLAY',
     kitName: 'National Cricket Arena Issue',
     image: '/campaigns/hero-cricket-action.jpg',
@@ -397,7 +393,7 @@ export const ModernNikeHero: React.FC = () => {
         <ChevronRight size={20} />
       </button>
 
-      {/* Bottom Minimalist Campaign Switcher Tabs (Ralph Lauren look) */}
+      {/* Bottom Minimalist Slide Indicators */}
       <div
         style={{
           position: 'absolute',
@@ -408,7 +404,7 @@ export const ModernNikeHero: React.FC = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '1.75rem',
+          gap: '0.65rem',
         }}
       >
         {CAMPAIGN_SLIDES.map((slide, idx) => {
@@ -418,37 +414,17 @@ export const ModernNikeHero: React.FC = () => {
               key={slide.id}
               onClick={() => setCurrentIdx(idx)}
               style={{
-                background: 'transparent',
+                width: isActive ? '36px' : '14px',
+                height: '3px',
+                borderRadius: '9999px',
+                background: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.3)',
                 border: 'none',
                 cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.4rem',
-                padding: '0.3rem 0.5rem',
+                padding: 0,
+                transition: 'all 0.3s ease',
               }}
-            >
-              <div
-                style={{
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.15em',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  color: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-                  transition: 'color 0.3s ease',
-                }}
-              >
-                {slide.tabLabel}
-              </div>
-              <div
-                style={{
-                  width: isActive ? '52px' : '22px',
-                  height: '2px',
-                  background: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.25)',
-                  transition: 'all 0.4s ease',
-                }}
-              />
-            </button>
+              aria-label={`Slide ${idx + 1}`}
+            />
           );
         })}
       </div>

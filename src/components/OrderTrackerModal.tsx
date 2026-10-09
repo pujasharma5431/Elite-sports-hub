@@ -8,7 +8,7 @@ import { X, Search, CheckCircle2, Package, Truck, Clock, ShieldCheck, MapPin } f
 
 const STATUS_STEPS: { id: OrderStatus; label: string; desc: string }[] = [
   { id: 'Order Received', label: 'Order Received', desc: 'Order request received & logged' },
-  { id: 'Packed', label: 'Packed', desc: 'Quality checked & heat-pressed in Kathmandu vault' },
+  { id: 'Packed', label: 'Packed', desc: 'Quality checked & heat-pressed at workshop' },
   { id: 'Dispatched', label: 'Dispatched', desc: 'En route with courier / air cargo' },
   { id: 'Delivered', label: 'Delivered', desc: 'Package received by customer' },
 ];

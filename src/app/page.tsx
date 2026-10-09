@@ -32,8 +32,6 @@ export default function ShopPage() {
     isLoading,
   } = useStore();
 
-  const [gridCols, setGridCols] = useState<3 | 4>(4);
-
   return (
     <main style={{ minHeight: '100vh', background: '#08090d', color: '#f1f5f9' }}>
       {/* 1. Cinematic Flagship Hero */}
@@ -47,7 +45,7 @@ export default function ShopPage() {
 
       {/* 4. Sticky Modern Filter Bar */}
       <div id="catalog-section">
-        <NikeFilterBar gridCols={gridCols} setGridCols={setGridCols} />
+        <NikeFilterBar />
       </div>
 
       {/* 5. Main Catalog Grid */}
@@ -95,7 +93,7 @@ export default function ShopPage() {
               </h3>
               <p style={{ color: '#94a3b8', fontSize: '0.88rem', maxWidth: '460px', lineHeight: 1.6 }}>
                 {jerseys.length === 0
-                  ? 'Our upcoming tournament match kits and limited player editions are currently being prepared in our Kathmandu vault. Stay tuned for the official drop!'
+                  ? 'Our upcoming tournament match kits and limited player editions are currently being prepared. Stay tuned for the official drop!'
                   : 'Try adjusting your category, size, or athlete filter to explore other official match issues.'}
               </p>
               {jerseys.length > 0 && (
@@ -110,10 +108,7 @@ export default function ShopPage() {
               id="nike-catalog-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns:
-                  gridCols === 4
-                    ? 'repeat(auto-fill, minmax(260px, 1fr))'
-                    : 'repeat(auto-fill, minmax(320px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                 gap: '1.5rem',
               }}
             >
