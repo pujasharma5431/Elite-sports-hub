@@ -43,6 +43,8 @@ interface StoreContextType {
   setIsAdminOpen: (open: boolean) => void;
   updateJerseyInventory: (id: string, updates: Partial<Jersey>) => void;
   addNewJersey: (jersey: Omit<Jersey, 'id'>) => void;
+  deleteJersey: (id: string) => void;
+  toggleJerseyVisibility: (id: string) => void;
   resetAllJerseys: () => void;
   // Sanity
   sanityConfig: SanityConfig;
@@ -73,64 +75,14 @@ const defaultFilters: FilterState = {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY_JERSEYS = 'elitesportshub_jerseys_v1';
+const LOCAL_STORAGE_KEY_JERSEYS = 'elitesportshub_jerseys_v2';
 const LOCAL_STORAGE_KEY_CART = 'elitesportshub_cart_v1';
 const LOCAL_STORAGE_KEY_WISHLIST = 'elitesportshub_wishlist_v1';
 const LOCAL_STORAGE_KEY_SANITY = 'elitesportshub_sanity_v1';
 const LOCAL_STORAGE_KEY_ORDERS = 'elitesportshub_orders_v1';
 const LOCAL_STORAGE_KEY_WHATSAPP = 'elitesportshub_whatsapp_v1';
 
-const INITIAL_SAMPLE_ORDERS: Order[] = [
-  {
-    id: 'ESH-89241',
-    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-    customerName: 'Aayush Shrestha',
-    phone: '9841234567',
-    country: 'Nepal',
-    region: 'Kathmandu (New Baneshwor)',
-    address: 'Near Eyeplex Mall, Ward 10',
-    totalAmount: 8999,
-    paymentMethod: 'esewa',
-    status: 'Packed',
-    items: [
-      {
-        id: 'sample-1',
-        jerseyId: 'ltd-messi-wc-final',
-        jersey: INITIAL_JERSEYS[5] || INITIAL_JERSEYS[0],
-        selectedSize: 'M',
-        selectedGender: 'men',
-        selectedColor: { name: 'Albiceleste Sky Blue', hex: '#38BDF8' },
-        quantity: 1,
-        price: 8999,
-      },
-    ],
-  },
-  {
-    id: 'ESH-92015',
-    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
-    customerName: 'Bikash Gurung',
-    phone: '9801987654',
-    country: 'Nepal',
-    region: 'Kaski (Pokhara)',
-    address: 'Lakeside, Ward 6',
-    totalAmount: 3550,
-    paymentMethod: 'cod',
-    status: 'Dispatched',
-    items: [
-      {
-        id: 'sample-2',
-        jerseyId: 'nep-cric-rohit-17',
-        jersey: INITIAL_JERSEYS[0],
-        selectedSize: 'L',
-        selectedGender: 'men',
-        selectedColor: { name: 'Rhino Red', hex: '#dc2626' },
-        customPrint: { name: 'BIKASH', number: '7' },
-        quantity: 1,
-        price: 3550,
-      },
-    ],
-  },
-];
+const INITIAL_SAMPLE_ORDERS: Order[] = [];
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [jerseys, setJerseys] = useState<Jersey[]>(INITIAL_JERSEYS);
@@ -372,10 +324,29 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     const newJersey: Jersey = {
       ...jerseyData,
       id: newId,
+      isVisible: jerseyData.isVisible !== undefined ? jerseyData.isVisible : true,
       rating: 5.0,
       reviewsCount: 1,
     };
     setJerseys((prev) => [newJersey, ...prev]);
+  };
+
+  const deleteJersey = (id: string) => {
+    setJerseys((prev) => prev.filter((j) => j.id !== id));
+    setCart((prev) => prev.filter((c) => c.jerseyId !== id));
+    setWishlist((prev) => prev.filter((wid) => wid !== id));
+  };
+
+  const toggleJerseyVisibility = (id: string) => {
+    setJerseys((prev) =>
+      prev.map((j) => {
+        if (j.id === id) {
+          const currentlyVisible = j.isVisible !== false;
+          return { ...j, isVisible: !currentlyVisible };
+        }
+        return j;
+      })
+    );
   };
 
   const resetAllJerseys = () => {
@@ -405,6 +376,9 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   // Filtered & Sorted Jerseys
   const filteredJerseys = useMemo(() => {
     return jerseys.filter((item) => {
+      // Visibility toggle (admin can hide/show product without re-adding)
+      if (item.isVisible === false) return false;
+
       // Search
       if (filters.search) {
         const q = filters.search.toLowerCase();
@@ -529,6 +503,8 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         setIsAdminOpen,
         updateJerseyInventory,
         addNewJersey,
+        deleteJersey,
+        toggleJerseyVisibility,
         resetAllJerseys,
         sanityConfig,
         saveSanityConfig,

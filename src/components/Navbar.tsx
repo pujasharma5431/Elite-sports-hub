@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useStore } from '../context/StoreContext';
-import { ShoppingBag, Heart, Sliders, Database, Search, Truck } from 'lucide-react';
+import { ShoppingBag, Heart, Sliders, Database, Search, Truck, Lock } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const {
@@ -132,6 +132,57 @@ export const Navbar: React.FC = () => {
               ✕
             </button>
           )}
+
+          {/* Secret Admin Portal Shortcut when typing 'admin' in Search */}
+          {filters.search.toLowerCase().trim() === 'admin' && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 8px)',
+                left: 0,
+                right: 0,
+                background: '#090a10',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                borderRadius: '8px',
+                padding: '0.65rem 0.85rem',
+                boxShadow: '0 12px 30px rgba(0, 0, 0, 0.8)',
+                zIndex: 100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Lock size={14} color="#f87171" />
+                <div>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-mono)' }}>
+                    Admin Control Terminal
+                  </div>
+                  <div style={{ fontSize: '0.65rem', color: '#94a3b8' }}>
+                    Authenticated management access
+                  </div>
+                </div>
+              </div>
+              <Link
+                href="/admin"
+                onClick={() => setFilters((prev) => ({ ...prev, search: '' }))}
+                style={{
+                  padding: '0.35rem 0.75rem',
+                  background: '#dc2626',
+                  color: '#ffffff',
+                  borderRadius: '6px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-mono)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Enter /admin →
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Navigation Categories */}
@@ -177,37 +228,6 @@ export const Navbar: React.FC = () => {
 
         {/* Right Tools & Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-          {/* Sanity CMS Pill */}
-          <button
-            id="sanity-connect-pill-btn"
-            onClick={() => setIsSanityModalOpen(true)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#cbd5e1',
-              borderRadius: '8px',
-              padding: '0.45rem 0.75rem',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-            title="Sanity CMS Connection Status"
-          >
-            <Database size={13} color="#94a3b8" />
-            <span>{sanityConfig.isConnected ? 'Sanity Live' : 'Sanity CMS'}</span>
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: sanityConfig.isConnected ? '#10b981' : '#64748b',
-              }}
-            />
-          </button>
-
           {/* Track Order Button */}
           <button
             id="navbar-track-order-btn"
@@ -231,30 +251,6 @@ export const Navbar: React.FC = () => {
             <Truck size={13} color="#10b981" />
             <span>Track Order</span>
           </button>
-
-          {/* Admin Portal Route Link */}
-          <Link
-            id="navbar-admin-link"
-            href="/admin"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#cbd5e1',
-              borderRadius: '8px',
-              padding: '0.45rem 0.75rem',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              textDecoration: 'none',
-              fontFamily: 'var(--font-mono)',
-            }}
-            title="Dedicated Admin Command Center"
-          >
-            <Sliders size={13} color="#94a3b8" />
-            <span>/admin</span>
-          </Link>
 
           {/* Wishlist */}
           <div

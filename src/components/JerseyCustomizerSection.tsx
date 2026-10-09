@@ -80,15 +80,39 @@ export const JerseyCustomizerSection: React.FC = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const matchedJersey = jerseys.find((j) => j.id === selectedPreset.jerseyId) || jerseys[0];
+  const activeJersey = matchedJersey || {
+    id: selectedPreset.jerseyId,
+    title: selectedPreset.name,
+    slug: selectedPreset.id,
+    category: 'cricket',
+    sport: selectedPreset.sport as any,
+    team: selectedPreset.team,
+    player: selectedPreset.defaultName,
+    edition: 'Custom Heat-Press Match Kit',
+    price: selectedPreset.price,
+    isOnSale: false,
+    isLimitedEdition: false,
+    stock: 25,
+    isLowStock: false,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    gender: ['men', 'women', 'unisex'],
+    colors: [{ name: 'Tournament White', hex: '#ffffff' }],
+    image: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=900&q=80',
+    rating: 5.0,
+    reviewsCount: 1,
+    fabric: 'AeroVent™ 100% Recycled Poly-Mesh',
+    description: 'Custom tournament heat-press printed edition.',
+    isCustomizable: true,
+  };
 
   const handleAddCustomToBag = () => {
     const finalPrice = selectedPreset.price + 350;
     addToCart({
-      jerseyId: matchedJersey.id,
-      jersey: matchedJersey,
+      jerseyId: activeJersey.id,
+      jersey: activeJersey,
       selectedSize,
       selectedGender,
-      selectedColor: matchedJersey.colors[0] || { name: 'Standard', hex: '#ffffff' },
+      selectedColor: activeJersey.colors?.[0] || { name: 'Standard', hex: '#ffffff' },
       customPrint: {
         name: customName.toUpperCase().trim() || 'CUSTOM',
         number: customNumber.trim() || '10',

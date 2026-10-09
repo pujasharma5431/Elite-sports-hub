@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useStore } from '../../context/StoreContext';
@@ -25,6 +25,10 @@ import {
   ArrowLeft,
   Phone,
   RefreshCw,
+  Eye,
+  EyeOff,
+  Trash2,
+  LogOut,
 } from 'lucide-react';
 
 const ALL_SIZES: JerseySize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
@@ -47,6 +51,8 @@ export default function AdminPage() {
     jerseys,
     updateJerseyInventory,
     addNewJersey,
+    deleteJersey,
+    toggleJerseyVisibility,
     resetAllJerseys,
     orders,
     updateOrderStatus,
@@ -75,11 +81,43 @@ export default function AdminPage() {
   const [newIsOnSale, setNewIsOnSale] = useState(false);
   const [newIsHeadlineDrop, setNewIsHeadlineDrop] = useState(false);
   const [newIsCustomizable, setNewIsCustomizable] = useState(true);
+  const [newIsVisible, setNewIsVisible] = useState(true);
   const [newQuality, setNewQuality] = useState('100% Pro Player Match Specification // AeroVent™ Poly-Mesh');
   const [newDescription, setNewDescription] = useState('Official authentic match jersey. Engineered for elite athlete performance and fan durability.');
   const [newSizes, setNewSizes] = useState<JerseySize[]>(['S', 'M', 'L', 'XL']);
   const [newGenders, setNewGenders] = useState<Gender[]>(['men', 'unisex']);
   const [newImageUrl, setNewImageUrl] = useState('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=900&q=80');
+
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [usernameInput, setUsernameInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  useEffect(() => {
+    const isAuth = sessionStorage.getItem('esh_admin_session_auth');
+    if (isAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (usernameInput.trim().toLowerCase() === 'admin' && passwordInput.trim() === 'admin') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('esh_admin_session_auth', 'true');
+      setLoginError('');
+      showNotification('✅ Authenticated as Admin');
+    } else {
+      setLoginError('Invalid username or password. Default is admin / admin.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('esh_admin_session_auth');
+    showNotification('🔒 Logged out of Admin Portal');
+  };
 
   const showNotification = (msg: string) => {
     setSuccessToast(msg);
@@ -110,6 +148,7 @@ export default function AdminPage() {
       isOnSale: newIsOnSale,
       isHeadlineDrop: newIsHeadlineDrop,
       isCustomizable: newIsCustomizable,
+      isVisible: newIsVisible,
       isLimitedEdition: newCategory === 'limited-edition',
       stock: Number(newStock) || 10,
       isLowStock: Number(newStock) <= 5,
@@ -153,6 +192,165 @@ export default function AdminPage() {
     );
   });
 
+  // Render Login Card if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          background: '#040507',
+          color: '#f1f5f9',
+          fontFamily: 'var(--font-primary), sans-serif',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2rem 1rem',
+          position: 'relative',
+        }}
+      >
+        <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem' }}>
+          <Link
+            href="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              color: '#a1a1aa',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              padding: '0.4rem 0.75rem',
+              borderRadius: '4px',
+            }}
+          >
+            <ArrowLeft size={14} />
+            <span>Return to Store</span>
+          </Link>
+        </div>
+
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '420px',
+            background: '#090a10',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '12px',
+            padding: '2.5rem 2rem',
+            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9)',
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'rgba(239, 68, 68, 0.15)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1rem auto',
+                color: '#ef4444',
+              }}
+            >
+              <Lock size={22} />
+            </div>
+            <h1
+              style={{
+                fontSize: '1.35rem',
+                fontWeight: 900,
+                letterSpacing: '-0.02em',
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                margin: '0 0 0.35rem 0',
+              }}
+            >
+              Admin Access Control
+            </h1>
+            <p style={{ fontSize: '0.78rem', color: '#71717a', margin: 0, fontFamily: 'var(--font-mono)' }}>
+              Elite Sports Hub // Kathmandu Workstation
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            {loginError && (
+              <div
+                style={{
+                  background: 'rgba(239, 68, 68, 0.12)',
+                  border: '1px solid rgba(239, 68, 68, 0.4)',
+                  color: '#f87171',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '6px',
+                  fontSize: '0.78rem',
+                  fontFamily: 'var(--font-mono)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                }}
+              >
+                <AlertTriangle size={15} />
+                <span>{loginError}</span>
+              </div>
+            )}
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
+                ADMIN USERNAME
+              </label>
+              <input
+                type="text"
+                required
+                autoFocus
+                placeholder="Enter username (admin)"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                className="form-input"
+                style={{ height: '42px', fontSize: '0.85rem' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.72rem', color: '#a1a1aa', marginBottom: '0.35rem', fontFamily: 'var(--font-mono)' }}>
+                ADMIN PASSWORD
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="Enter password (admin)"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                className="form-input"
+                style={{ height: '42px', fontSize: '0.85rem' }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{
+                height: '44px',
+                fontWeight: 800,
+                letterSpacing: '0.06em',
+                fontSize: '0.82rem',
+                marginTop: '0.5rem',
+              }}
+            >
+              <Unlock size={15} />
+              <span>AUTHENTICATE & ACCESS PORTAL</span>
+            </button>
+
+            <div style={{ textAlign: 'center', marginTop: '0.5rem', fontSize: '0.7rem', color: '#52525b', fontFamily: 'var(--font-mono)' }}>
+              Master credentials: username <strong style={{ color: '#a1a1aa' }}>admin</strong> / password <strong style={{ color: '#a1a1aa' }}>admin</strong>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -193,6 +391,27 @@ export default function AdminPage() {
               <ArrowLeft size={14} />
               <span>Back to Store</span>
             </Link>
+
+            <button
+              onClick={handleLogout}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                color: '#f87171',
+                background: 'rgba(239, 68, 68, 0.1)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.75rem',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                padding: '0.4rem 0.75rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+              title="Log out of the admin panel"
+            >
+              <LogOut size={13} />
+              <span>Logout</span>
+            </button>
 
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -632,8 +851,35 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {filteredJerseys.map((jersey) => {
+            {filteredJerseys.length === 0 ? (
+              <div
+                style={{
+                  padding: '3.5rem 2rem',
+                  textAlign: 'center',
+                  background: '#090a0f',
+                  border: '1px dashed rgba(255, 255, 255, 0.15)',
+                  borderRadius: '8px',
+                }}
+              >
+                <Package size={36} color="#71717a" style={{ margin: '0 auto 1rem auto' }} />
+                <h3 style={{ fontSize: '1.1rem', color: '#ffffff', marginBottom: '0.4rem', fontWeight: 800 }}>
+                  No Products in Store Inventory
+                </h3>
+                <p style={{ fontSize: '0.82rem', color: '#71717a', maxWidth: '440px', margin: '0 auto 1.5rem auto', lineHeight: 1.5 }}>
+                  The catalog is currently empty. Click &quot;Add New Match Drop&quot; to upload your first jersey with automatic WebP compression and custom player specs.
+                </p>
+                <button
+                  onClick={() => setActiveTab('add')}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.35rem', fontSize: '0.78rem', fontWeight: 800 }}
+                >
+                  <PlusCircle size={15} />
+                  <span>ADD NEW MATCH DROP</span>
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                {filteredJerseys.map((jersey) => {
                 const isExpanded = expandedJerseyId === jersey.id;
                 const isHeadline = !!jersey.isHeadlineDrop;
                 const isCustomizable = jersey.isCustomizable !== false;
@@ -708,6 +954,26 @@ export default function AdminPage() {
                             >
                               <Lock size={10} />
                               Custom Locked
+                            </span>
+                          )}
+                          {jersey.isVisible === false && (
+                            <span
+                              style={{
+                                background: 'rgba(234, 179, 8, 0.15)',
+                                border: '1px solid rgba(234, 179, 8, 0.5)',
+                                color: '#facc15',
+                                fontSize: '0.62rem',
+                                fontWeight: 800,
+                                padding: '0.15rem 0.45rem',
+                                fontFamily: 'var(--font-mono)',
+                                textTransform: 'uppercase',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.2rem',
+                              }}
+                            >
+                              <EyeOff size={10} />
+                              Hidden from Store
                             </span>
                           )}
                         </div>
@@ -835,6 +1101,67 @@ export default function AdminPage() {
                       >
                         <FileText size={13} />
                         <span>{isExpanded ? 'CLOSE SPECS' : 'EDIT QUALITY & SPECS'}</span>
+                      </button>
+
+                      {/* Live Store Visibility Toggle */}
+                      <button
+                        onClick={() => {
+                          toggleJerseyVisibility(jersey.id);
+                          const nextVis = jersey.isVisible === false;
+                          showNotification(
+                            nextVis
+                              ? `🟢 "${jersey.title}" is now LIVE on the website!`
+                              : `👁️‍🗨️ "${jersey.title}" is now HIDDEN from the website.`
+                          );
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          padding: '0.55rem 0.75rem',
+                          background: jersey.isVisible !== false ? 'rgba(16, 185, 129, 0.12)' : 'rgba(234, 179, 8, 0.12)',
+                          border: jersey.isVisible !== false ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(234, 179, 8, 0.4)',
+                          color: jersey.isVisible !== false ? '#34d399' : '#facc15',
+                          fontSize: '0.72rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          fontFamily: 'var(--font-mono)',
+                          textTransform: 'uppercase',
+                        }}
+                        title="Toggle customer visibility on storefront without deleting"
+                      >
+                        {jersey.isVisible !== false ? <Eye size={13} /> : <EyeOff size={13} />}
+                        <span>{jersey.isVisible !== false ? 'STORE: LIVE / VISIBLE' : 'STORE: HIDDEN (DRAFT)'}</span>
+                      </button>
+
+                      {/* Delete Product */}
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`⚠️ Permanently delete "${jersey.title}" from store inventory? This cannot be undone.`)) {
+                            deleteJersey(jersey.id);
+                            showNotification(`🗑️ Deleted "${jersey.title}".`);
+                          }
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          padding: '0.55rem 0.75rem',
+                          background: 'rgba(239, 68, 68, 0.08)',
+                          border: '1px solid rgba(239, 68, 68, 0.3)',
+                          color: '#ef4444',
+                          fontSize: '0.72rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          fontFamily: 'var(--font-mono)',
+                          textTransform: 'uppercase',
+                        }}
+                        title="Permanently remove this jersey from the store"
+                      >
+                        <Trash2 size={13} />
+                        <span>DELETE PRODUCT</span>
                       </button>
                     </div>
 
@@ -989,6 +1316,7 @@ export default function AdminPage() {
                 );
               })}
             </div>
+            )}
           </div>
         )}
 
@@ -1262,6 +1590,16 @@ export default function AdminPage() {
                     style={{ accentColor: '#ffffff' }}
                   />
                   <span>Flash Sale Drop</span>
+                </label>
+
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#ffffff', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>
+                  <input
+                    type="checkbox"
+                    checked={newIsVisible}
+                    onChange={(e) => setNewIsVisible(e.target.checked)}
+                    style={{ accentColor: '#10b981' }}
+                  />
+                  <span>🟢 Visible to Customers Immediately (Uncheck to Save as Hidden Draft)</span>
                 </label>
               </div>
 

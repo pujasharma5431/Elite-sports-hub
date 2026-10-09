@@ -17,6 +17,9 @@ import {
   Unlock,
   FileText,
   ShieldCheck,
+  Eye,
+  EyeOff,
+  Trash2,
 } from 'lucide-react';
 import { AdminImageUploader } from './AdminImageUploader';
 
@@ -35,6 +38,8 @@ export const InventoryManagerModal: React.FC = () => {
     jerseys,
     updateJerseyInventory,
     addNewJersey,
+    deleteJersey,
+    toggleJerseyVisibility,
     resetAllJerseys,
   } = useStore();
 
@@ -529,6 +534,67 @@ export const InventoryManagerModal: React.FC = () => {
                       >
                         <FileText size={13} />
                         <span>{isExpanded ? 'CLOSE DETAILS' : 'EDIT QUALITY & SPECS'}</span>
+                      </button>
+
+                      {/* Visibility Toggle */}
+                      <button
+                        onClick={() => {
+                          toggleJerseyVisibility(jersey.id);
+                          const nextVis = jersey.isVisible === false;
+                          showNotification(
+                            nextVis
+                              ? `🟢 "${jersey.title}" is now LIVE on the website!`
+                              : `👁️‍🗨️ "${jersey.title}" is now HIDDEN from the website.`
+                          );
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          padding: '0.5rem 0.75rem',
+                          background: jersey.isVisible !== false ? 'rgba(16, 185, 129, 0.12)' : 'rgba(234, 179, 8, 0.12)',
+                          border: jersey.isVisible !== false ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(234, 179, 8, 0.4)',
+                          color: jersey.isVisible !== false ? '#34d399' : '#facc15',
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                        }}
+                        title="Toggle customer visibility"
+                      >
+                        {jersey.isVisible !== false ? <Eye size={13} /> : <EyeOff size={13} />}
+                        <span>{jersey.isVisible !== false ? 'LIVE / VISIBLE' : 'HIDDEN (DRAFT)'}</span>
+                      </button>
+
+                      {/* Delete Product */}
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`⚠️ Delete "${jersey.title}" permanently?`)) {
+                            deleteJersey(jersey.id);
+                            showNotification(`🗑️ Deleted "${jersey.title}".`);
+                          }
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          padding: '0.5rem 0.75rem',
+                          background: 'rgba(239, 68, 68, 0.08)',
+                          border: '1px solid rgba(239, 68, 68, 0.3)',
+                          color: '#ef4444',
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                        }}
+                        title="Delete product"
+                      >
+                        <Trash2 size={13} />
+                        <span>DELETE</span>
                       </button>
                     </div>
 

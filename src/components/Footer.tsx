@@ -293,34 +293,31 @@ export const Footer: React.FC = () => {
                 marginBottom: '1rem',
               }}
             >
-              Management
+              Authenticity
             </div>
-            <p style={{ fontSize: '0.78rem', color: '#71717a', lineHeight: 1.5, marginBottom: '0.85rem' }}>
-              Dedicated admin workstation for managing match drops, custom print toggles, and live customer orders.
+            <p style={{ fontSize: '0.78rem', color: '#71717a', lineHeight: 1.6, marginBottom: '0.85rem' }}>
+              Every match drop in our vault features high-definition thermal crests, player-grade AeroVent™ micro-mesh, and strict quality verification.
             </p>
-            <Link
-              href="/admin"
+            <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.55rem 0.85rem',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                background: 'rgba(255, 255, 255, 0.05)',
-                color: '#ffffff',
-                textDecoration: 'none',
+                padding: '0.45rem 0.75rem',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                background: 'rgba(255, 255, 255, 0.03)',
+                color: '#10b981',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.72rem',
                 fontWeight: 700,
                 letterSpacing: '0.04em',
                 textTransform: 'uppercase',
                 borderRadius: '4px',
-                transition: 'all 0.2s',
               }}
             >
-              <Lock size={12} />
-              <span>Admin Portal (/admin)</span>
-            </Link>
+              <ShieldCheck size={13} />
+              <span>100% Match Kit Standard</span>
+            </div>
           </div>
         </div>
 
@@ -339,7 +336,7 @@ export const Footer: React.FC = () => {
           }}
         >
           <div>
-            © {new Date().getFullYear()} Elite Sports Hub Pvt. Ltd. All rights reserved. Registered in Kathmandu, Nepal.
+            © {new Date().getFullYear()} Elite Sports Hub Pvt. Ltd. All rights reserved.
           </div>
 
           <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', alignItems: 'center' }}>

@@ -26,6 +26,7 @@ import {
 
 export default function ShopPage() {
   const {
+    jerseys,
     filteredJerseys,
     resetFilters,
     isLoading,
@@ -58,14 +59,14 @@ export default function ShopPage() {
                 ⚡
               </div>
               <p style={{ letterSpacing: '0.05em', fontSize: '1.1rem', fontWeight: 600 }}>
-                Loading jerseys from Sanity Content Lake...
+                Loading jerseys from Content Lake...
               </p>
             </div>
           ) : filteredJerseys.length === 0 ? (
             <div
               style={{
                 textAlign: 'center',
-                padding: '4rem 2rem',
+                padding: '4.5rem 2rem',
                 background: 'rgba(255, 255, 255, 0.02)',
                 border: '1px dashed rgba(255, 255, 255, 0.12)',
                 borderRadius: '16px',
@@ -77,28 +78,32 @@ export default function ShopPage() {
             >
               <div
                 style={{
-                  width: '60px',
-                  height: '60px',
+                  width: '64px',
+                  height: '64px',
                   borderRadius: '50%',
-                  background: 'rgba(239, 68, 68, 0.12)',
+                  background: jerseys.length === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(239, 68, 68, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#ef4444',
+                  color: jerseys.length === 0 ? '#ffffff' : '#ef4444',
                 }}
               >
-                <SlidersHorizontal size={28} />
+                {jerseys.length === 0 ? <Sparkles size={28} /> : <SlidersHorizontal size={28} />}
               </div>
-              <h3 style={{ fontSize: '1.25rem', color: '#ffffff' }}>
-                No Kits Found for this Filter
+              <h3 style={{ fontSize: '1.3rem', color: '#ffffff', fontWeight: 800 }}>
+                {jerseys.length === 0 ? 'New Season Drops Landing Soon' : 'No Kits Found for this Filter'}
               </h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.88rem', maxWidth: '420px', lineHeight: 1.5 }}>
-                Try adjusting your category, size, or athlete filter to explore other official match issues.
+              <p style={{ color: '#94a3b8', fontSize: '0.88rem', maxWidth: '460px', lineHeight: 1.6 }}>
+                {jerseys.length === 0
+                  ? 'Our upcoming tournament match kits and limited player editions are currently being prepared in our Kathmandu vault. Stay tuned for the official drop!'
+                  : 'Try adjusting your category, size, or athlete filter to explore other official match issues.'}
               </p>
-              <button onClick={resetFilters} className="btn btn-primary" style={{ padding: '0.65rem 1.4rem' }}>
-                <RotateCcw size={15} />
-                <span>Reset All Filters</span>
-              </button>
+              {jerseys.length > 0 && (
+                <button onClick={resetFilters} className="btn btn-primary" style={{ padding: '0.65rem 1.4rem' }}>
+                  <RotateCcw size={15} />
+                  <span>Reset All Filters</span>
+                </button>
+              )}
             </div>
           ) : (
             <div

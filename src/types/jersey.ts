@@ -41,6 +41,7 @@ export interface Jersey {
   nepalSpecial?: boolean;
   isHeadlineDrop?: boolean; // Admin sets whether featured in Headline Match Drops
   isCustomizable?: boolean; // Admin sets whether customizable with custom name/number
+  isVisible?: boolean; // Admin can toggle visibility on customer storefront without re-adding
 }
 
 export interface FilterState {
