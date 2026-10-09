@@ -229,7 +229,7 @@ export default function AdminPage() {
               type="text"
               value={tempWaNumber}
               onChange={(e) => setTempWaNumber(e.target.value)}
-              placeholder="9779801234567"
+              placeholder="9821952621"
               style={{
                 width: '130px',
                 background: '#000000',

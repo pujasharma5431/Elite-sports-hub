@@ -148,7 +148,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [trackingOrderCode, setTrackingOrderCode] = useState('');
-  const [adminWhatsAppNumber, setAdminWhatsAppNumber] = useState('9779801234567');
+  const [adminWhatsAppNumber, setAdminWhatsAppNumber] = useState('9779821952621');
 
   const [sanityConfig, setSanityConfig] = useState<SanityConfig>({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',

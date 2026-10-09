@@ -50,21 +50,21 @@ export const Footer: React.FC = () => {
   const socialLinks = [
     {
       name: 'Facebook',
-      href: '#facebook',
+      href: 'https://www.facebook.com/profile.php?id=61591797608948',
       icon: <FacebookIcon size={17} />,
       label: 'Elite Sports Hub Nepal',
     },
     {
       name: 'Instagram',
-      href: '#instagram',
+      href: 'https://www.instagram.com/elite.sports.hub',
       icon: <InstagramIcon size={17} />,
-      label: '@elitesportshub.np',
+      label: '@elite.sports.hub',
     },
     {
       name: 'TikTok',
-      href: '#tiktok',
+      href: 'https://www.tiktok.com/@elite.sports.hub',
       icon: <TikTokIcon size={17} />,
-      label: '@elitesportshub',
+      label: '@elite.sports.hub',
     },
     {
       name: 'Pinterest',
@@ -74,7 +74,7 @@ export const Footer: React.FC = () => {
     },
     {
       name: 'YouTube',
-      href: '#youtube',
+      href: 'https://www.youtube.com/@EliteSportsHub-k2k',
       icon: <YoutubeIcon size={17} />,
       label: 'Elite Sports Match Drops',
     },
@@ -157,6 +157,8 @@ export const Footer: React.FC = () => {
                   <a
                     key={s.name}
                     href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     title={s.name}
                     aria-label={s.name}
                     style={{

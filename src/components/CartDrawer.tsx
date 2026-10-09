@@ -24,12 +24,9 @@ export const CartDrawer: React.FC = () => {
 
   if (!isCartOpen) return null;
 
-  const freeShippingThreshold = 3500;
   const deliveryFee =
     deliveryZone === 'ktm'
-      ? cartTotal >= freeShippingThreshold
-        ? 0
-        : 100
+      ? 100
       : deliveryZone === 'outside'
       ? 150
       : 200;
@@ -121,7 +118,7 @@ export const CartDrawer: React.FC = () => {
           </button>
         </div>
 
-        {/* Free Shipping Strip */}
+        {/* Dispatch Info Strip */}
         <div
           style={{
             background: '#080808',
@@ -131,11 +128,13 @@ export const CartDrawer: React.FC = () => {
             fontSize: '0.72rem',
             letterSpacing: '0.06em',
             color: '#a1a1aa',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          {cartTotal >= freeShippingThreshold
-            ? 'FREE SAME-DAY KATHMANDU DISPATCH UNLOCKED'
-            : `ADD NPR ${(freeShippingThreshold - cartTotal).toLocaleString()} MORE FOR FREE KTM DELIVERY`}
+          <span>EXPRESS KATHMANDU VAULT DISPATCH</span>
+          <span style={{ color: '#ffffff' }}>77 DISTRICTS • DUBAI • INDIA</span>
         </div>
 
         {/* Items List */}
@@ -284,9 +283,9 @@ export const CartDrawer: React.FC = () => {
             {/* Delivery destination */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.35rem' }}>
               {[
-                { id: 'ktm', label: 'KTM VALLEY', fee: cartTotal >= freeShippingThreshold ? 'FREE' : 'NPR 100' },
-                { id: 'outside', label: 'POKHARA/CIT', fee: 'NPR 150' },
-                { id: 'remote', label: 'ALL NEPAL', fee: 'NPR 200' },
+                { id: 'ktm', label: 'KTM VALLEY', fee: 'NPR 100' },
+                { id: 'outside', label: 'MAJOR CITIES', fee: 'NPR 150' },
+                { id: 'remote', label: 'OTHER DISTRICTS', fee: 'NPR 200' },
               ].map((z) => (
                 <button
                   key={z.id}
